@@ -1,0 +1,74 @@
+@use './color.scss' as *;
+
+:root {
+  --primary-varient: #{$primary-varient};
+
+  --secondary-color: #{$secondary};
+  --secondary-rgb: #{$secondary-rgb};
+  --secondary-gradient: #{$secondary-gradient};
+
+  --yellow-color: #{$yellow};
+  --yellow-rgb: #{$yellow-rgb};
+}
+
+:root,
+:root[data-theme='light'] {
+  --primary-color: #{$primary};
+  --primary-rgb: #{$primary-rgb};
+  --primary-gradient: #{$primary-gradient};
+
+  --bg-color: #{$white};
+  --bg-rgb: #{$white-rgb};
+
+  --text-color: #{$black};
+  --text-rgb: #{$black-rgb};
+
+  --accent-color: #{$blue};
+  --accent-rgb: #{$blue-rgb};
+
+  --error-color: #{$error};
+  --error-rgb: #{$error-rgb};
+}
+
+:root[data-theme='dark'] {
+  --primary-color: #{$dark-primary};
+  --primary-rgb: #{$dark-primary-rgb};
+  --primary-gradient: #{$dark-primary-gradient};
+
+  --bg-color: #{$black};
+  --bg-rgb: #{$black-rgb};
+
+  --text-color: #{$white};
+  --text-rgb: #{$white-rgb};
+
+  --accent-color: #{$dark-blue};
+  --accent-rgb: #{$dark-blue-rgb};
+
+  --error-color: #{$dark-error};
+  --error-rgb: #{$dark-error-rgb};
+}
+
+html,
+body {
+  font-size: 16px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+input {
+  accent-color: var(--accent-color);
+}
+
+a {
+  font-size: inherit;
+  background-color: inherit;
+  text-decoration: none;
+  font-weight: bold;
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+a:active,
+a:hover {
+  text-decoration-thickness: 2px;
+  background: var(--primary-gradient);
+}

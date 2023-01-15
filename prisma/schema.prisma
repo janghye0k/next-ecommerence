@@ -1,0 +1,199 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// generator dbml {
+//   provider = "prisma-dbml-generator"
+// }
+
+model User {
+  id String @default(cuid()) @id
+  pwd String @unique()
+  firstName String @map("first_name")
+  lastName String @map("last_name")
+  email String @unique()
+  image String?
+  tall Int?
+  weight Int? 
+  addresses Address[] 
+  likes Like[]
+  carts Cart[]
+  orders Order[]
+  reviews Review[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+}
+
+model Address {
+  id Int @default(autoincrement()) @id()
+  user User @relation(fields: [userId], references: [id])
+  userId String @map("user_id") 
+  name String
+  recipient String
+  phone Int
+  postCode Int @map("post_code")
+  addressBase String @map("address_base")
+  addressDetail String? @map("address_detail")
+  message String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+}
+
+model Product {
+  id String @default(cuid()) @id
+  thumbnail String 
+  images String[]
+  name String
+  description String?
+  price Float
+  season String[]
+  fit String[]
+  elastic String?
+  opacity String?
+  show Boolean @default(true)
+  discounts Discount[]
+  likes Like[]
+  carts Cart[]
+  inventory ProductInventory[]
+  orders OrderItem[]
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int @map("category_id")
+  reviews Review[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+}
+
+model ProductInventory {
+  id Int @default(autoincrement()) @id()
+  productId String @map("product_id")
+  product Product @relation(fields: [productId], references: [id])
+  colorId Int @map("color_id")
+  color Color @relation(fields: [colorId], references: [id])
+  sizeId Int @map("size_id")
+  size Size @relation(fields: [sizeId], references: [id])
+  carts Cart[]
+  orders OrderItem[]
+  qty Int @default(0)
+}
+
+model Category {
+  id Int @default(autoincrement()) @id()
+  fullName String @map("full_name")
+  names String[]
+  products Product[]
+}
+
+model Color {
+  id Int @default(autoincrement()) @id()
+  name String
+  code String
+  products ProductInventory[]
+}
+
+model Size {
+  id Int @default(autoincrement()) @id()
+  name String
+  value Int
+  products ProductInventory[]
+}
+
+model Discount {
+  id Int @default(autoincrement()) @id()
+  name String
+  description String
+  percent Float
+  productId String @map("product_id")
+  product Product @relation(references: [id], fields: [productId])
+  orders OrderItem[]
+  show Boolean @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+}
+
+model Like {
+  id Int @default(autoincrement()) @id()
+  userId String @map("user_id")
+  productId String @map("product_id")
+  user User @relation(fields: [userId] ,references: [id])
+  product Product @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+}
+
+model Cart {
+  id Int @default(autoincrement()) @id()
+  userId String @map("user_id")
+  user User @relation(fields: [userId], references: [id])
+  productId String @map("product_id")
+  product Product @relation(fields: [productId], references: [id])
+  productInventoryId Int @map("product_inventory_id")
+  productInventory ProductInventory @relation(fields: [productInventoryId], references: [id], map: "product_inventory")
+  qty Int @default(1)
+}
+
+
+model Order {
+  id String @default(cuid()) @id()
+  userId String @map("user_id")
+  user User @relation(fields: [userId], references: [id])
+  items OrderItem[]
+  paymentId String? @unique() @map("payment_id")
+  payment Payment? @relation(fields: [paymentId], references: [id])
+  total Float
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+}
+
+model OrderItem {
+  id String @default(cuid()) @id()
+  orderId String @map("order_id")
+  order Order @relation(fields: [orderId], references: [id])
+  productId String @map("product_id")
+  product Product @relation(fields: [productId], references: [id])
+  productInventoryId Int @map("product_inventory_id")
+  productInventory ProductInventory @relation(fields: [productInventoryId], references: [id], map: "product_inventory")
+  discountId Int @map("discount_id")
+  discount Discount @relation(fields: [discountId], references: [id])
+  qty Int
+  review Review?
+  deliveryStatus Int @default(0) @map("delivery_status")
+  isRefund Boolean @default(false)
+}
+
+model Payment {
+  id String @default(cuid()) @id()
+  orderId String? @map("order_id")
+  order Order?
+  order_name String?
+  method String
+  methodName String @map("method_name")
+  card_name String?
+  card_no String?
+  receipt_url String?
+  purchasedAt DateTime @map("purchased_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+}
+
+model Review {
+  id String @default(cuid()) @id()
+  images String[]
+  score Int
+  content String
+  userId String @map("user_id")
+  productId String @map("product_id")
+  orderItemId String @map("order_item_id") @unique()
+  user User @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+  orderItem OrderItem @relation(fields: [orderItemId], references: [id], map: "order_item")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+}

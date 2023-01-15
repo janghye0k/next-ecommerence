@@ -1,0 +1,138 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id String [pk]
+  pwd String [unique, not null]
+  token String
+  firstName String [not null]
+  lastName String [not null]
+  email String [unique, not null]
+  image String
+  tall Int
+  weight Int
+  addresses Address [not null]
+  likes Like [not null]
+  orders Order [not null]
+  reviews Review [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Address {
+  id String [pk]
+  user User [not null]
+  uid String [not null]
+  name String [not null]
+  recipient String [not null]
+  phone Int [not null]
+  postCode Int [not null]
+  base String [not null]
+  detail String
+  message String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Product {
+  id String [pk]
+  image String [not null]
+  detailImages String[] [not null]
+  name String [not null]
+  description String
+  price Int [not null]
+  qty Int [not null, default: 0]
+  views Int [not null, default: 0]
+  category String [not null]
+  season String[] [not null]
+  fit String[] [not null]
+  elastic String
+  opacity String [not null]
+  colors Json[] [not null]
+  sizes String[] [not null]
+  likes Like [not null]
+  orders Order [not null]
+  reviews Review [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Category {
+  id Int [pk, increment]
+  c1 String [not null]
+  c2 String [not null]
+  c3 String [not null]
+  c4 String [not null]
+  sizes Size [not null]
+}
+
+Table Color {
+  id Int [pk, increment]
+  name String [not null]
+  code String [not null]
+}
+
+Table Size {
+  id Int [pk, increment]
+  categoryId Int [not null]
+  category Category [not null]
+  value String [not null]
+  priority Int
+}
+
+Table Like {
+  id String [pk]
+  uid String [not null]
+  pid String [not null]
+  user User [not null]
+  product Product [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Order {
+  id String [pk]
+  uid String [not null]
+  pid String [not null]
+  user User [not null]
+  product Product [not null]
+  size String [not null]
+  color Json [not null]
+  qty Int [not null]
+  status Int [not null, default: 0]
+  isArrive Int [not null, default: 0]
+  isReview Boolean [not null, default: false]
+  refundPreiod Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  paymentAt DateTime
+  updatedAt DateTime [not null]
+}
+
+Table Review {
+  id String [pk]
+  uid String [not null]
+  pid String [not null]
+  orderId String [not null]
+  images String[] [not null]
+  score Int [not null]
+  content String [not null]
+  user User [not null]
+  product Product [not null]
+}
+
+Ref: Address.uid > User.id
+
+Ref: Size.categoryId > Category.id
+
+Ref: Like.uid > User.id
+
+Ref: Like.pid > Product.id
+
+Ref: Order.uid > User.id
+
+Ref: Order.pid > Product.id
+
+Ref: Review.uid > User.id
+
+Ref: Review.pid > Product.id
