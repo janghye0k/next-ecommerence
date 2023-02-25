@@ -82,6 +82,8 @@ model ProductInventory {
   carts Cart[]
   orders OrderItem[]
   qty Int @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
 }
 
 model Category {
@@ -89,6 +91,8 @@ model Category {
   fullName String @map("full_name")
   names String[]
   products Product[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
 }
 
 model Color {
@@ -96,6 +100,8 @@ model Color {
   name String
   code String
   products ProductInventory[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
 }
 
 model Size {
@@ -103,6 +109,8 @@ model Size {
   name String
   value Int
   products ProductInventory[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
 }
 
 model Discount {
@@ -110,8 +118,7 @@ model Discount {
   name String
   description String
   percent Float
-  productId String @map("product_id")
-  product Product @relation(references: [id], fields: [productId])
+  products Product[] 
   orders OrderItem[]
   show Boolean @default(true)
   createdAt DateTime @default(now()) @map("created_at")
@@ -137,6 +144,8 @@ model Cart {
   productInventoryId Int @map("product_inventory_id")
   productInventory ProductInventory @relation(fields: [productInventoryId], references: [id], map: "product_inventory")
   qty Int @default(1)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
 }
 
 
@@ -146,7 +155,7 @@ model Order {
   user User @relation(fields: [userId], references: [id])
   items OrderItem[]
   paymentId String? @unique() @map("payment_id")
-  payment Payment? @relation(fields: [paymentId], references: [id])
+  payment Payment? 
   total Float
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
@@ -161,17 +170,19 @@ model OrderItem {
   productInventoryId Int @map("product_inventory_id")
   productInventory ProductInventory @relation(fields: [productInventoryId], references: [id], map: "product_inventory")
   discountId Int @map("discount_id")
-  discount Discount @relation(fields: [discountId], references: [id])
+  discount Discount? @relation(fields: [discountId], references: [id])
   qty Int
   review Review?
   deliveryStatus Int @default(0) @map("delivery_status")
-  isRefund Boolean @default(false)
+  isRefund Boolean @default(false) @map("id_refund")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
 }
 
 model Payment {
   id String @default(cuid()) @id()
-  orderId String? @map("order_id")
-  order Order?
+  orderId String @map("order_id") @unique()
+  order Order @relation(fields: [orderId], references: [id])
   order_name String?
   method String
   methodName String @map("method_name")
