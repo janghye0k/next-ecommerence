@@ -28,7 +28,12 @@ export default function App({ Component, pageProps }: AppProps) {
           name="keywords"
           content="next.js,react,e-commerence,shop,PIIC,쇼핑, 쇼핑몰, 의류"
         />
-        <title>PIIC - Next.js e-commerence</title>
+        <link
+          rel="shortcut icon"
+          href="favicons/favicon.ico"
+          type="image/x-icon"
+        />
+        <title>PIIC | Next.js e-commerence</title>
       </Head>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools />

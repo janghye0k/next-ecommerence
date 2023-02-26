@@ -1,6 +1,13 @@
 @use './color.scss' as *;
 
+@font-face {
+  font-family: LogoFont, sans-serif;
+  src: url('/fonts/Keania_One/KeaniaOne-Regular.ttf');
+}
+
 :root {
+  --logo-font: LogoFont;
+
   --primary-varient: #{$primary-varient};
 
   --secondary-color: #{$secondary};
