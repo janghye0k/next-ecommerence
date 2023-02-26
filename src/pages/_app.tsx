@@ -9,11 +9,15 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import { SessionProvider } from 'next-auth/react'
 import Layout from '@/components/Layout'
 
 const queryClient = new QueryClient()
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   return (
     <>
       <Head>
@@ -35,22 +39,24 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <title>PIIC | Next.js e-commerence</title>
       </Head>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools />
-        <Hydrate state={pageProps.dehydratedState}>
-          <MantineProvider
-            withGlobalStyles
-            withNormalizeCSS
-            theme={{
-              colorScheme: 'light',
-            }}
-          >
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </MantineProvider>
-        </Hydrate>
-      </QueryClientProvider>
+      <SessionProvider session={session}>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools />
+          <Hydrate state={pageProps.dehydratedState}>
+            <MantineProvider
+              withGlobalStyles
+              withNormalizeCSS
+              theme={{
+                colorScheme: 'light',
+              }}
+            >
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </MantineProvider>
+          </Hydrate>
+        </QueryClientProvider>
+      </SessionProvider>
     </>
   )
 }

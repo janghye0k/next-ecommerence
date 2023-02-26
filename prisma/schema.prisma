@@ -14,12 +14,19 @@ generator client {
 //   provider = "prisma-dbml-generator"
 // }
 
+enum Provider {
+  Credentials
+  KAKAO
+  GOOGLE
+}
+
 model User {
   id String @default(cuid()) @id
-  pwd String @unique()
-  firstName String @map("first_name")
-  lastName String @map("last_name")
   email String @unique()
+  provider Provider? @default(Credentials)
+  brithday DateTime
+  name String
+  pwd String? 
   image String?
   tall Int?
   weight Int? 

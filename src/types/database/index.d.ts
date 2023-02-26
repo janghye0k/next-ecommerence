@@ -17,22 +17,23 @@ type TableDate = {
  * 데이터베이스 유저 타입
  */
 
+type Provider = 'Credentials' | 'KAKAO' | 'GOOGLE'
+
 interface User
   extends UserRequire,
     TableId<string>,
     TableDate,
-    Partial<UserOptional & UserRelations> {
-  pwd?: string
-}
+    Partial<UserOptional & UserRelations> {}
 
 type UserRequire = {
-  pwd: string
-  first_name: string
-  last_name: string
+  name: string
   email: string
 }
 
 type UserOptional = {
+  provider: Provider
+  pwd: string
+  birthday: Date
   image: string
   tall: number
   weight: number
