@@ -1,50 +1,84 @@
 /**
+ * Next Auth Database
+ */
+
+type NextAuthAccount = {
+  id: string
+  userId: string
+  type: string
+  provider: string
+  providerAccountId: string
+  refresh_token?: string
+  access_token?: string
+  token_type?: string
+  scope?: string
+  id_token?: string
+  session_state?: string
+}
+
+type NextAuthSession = {
+  id: string
+  sessionToken: string
+  userId: string
+  expires: Date
+  user: PrismaUser
+}
+
+type NextAuthVerificationToken = {
+  identifier: string
+  token: string
+  expires: Date
+}
+
+/**
  * Database Common Types
  * 데이터베이스 공통 타입
  */
 
-type TableId<T> = {
+type PrismaTableId<T> = {
   id: T
 }
 
-type TableDate = {
-  created_at: Date | string
-  updated_at: Date | string
+type PrismaTableDate = {
+  createdAt: Date | string
+  updatedAt: Date | string
 }
 
 /**
  * Database User Types
- * 데이터베이스 유저 타입
+ * 데이터베이스 고객 타입
  */
 
-type Provider = 'Credentials' | 'KAKAO' | 'GOOGLE'
+interface PrismaUser
+  extends PrismaUserRequire,
+    PrismaTableId<string>,
+    PrismaTableDate,
+    Partial<PrismaUserOptional & PrismaUserRelations> {}
 
-interface User
-  extends UserRequire,
-    TableId<string>,
-    TableDate,
-    Partial<UserOptional & UserRelations> {}
-
-type UserRequire = {
+type PrismaUserRequire = {
+  username: string
   name: string
   email: string
 }
 
-type UserOptional = {
-  provider: Provider
+type PrismaUserOptional = {
   pwd: string
   birthday: Date
   image: string
   tall: number
   weight: number
+  user: object
 }
 
-type UserRelations = {
+type PrismaUserRelations = {
   addresses: Address[]
   likes: Like[]
   carts: Cart[]
   orders: Order[]
   reviews: Review[]
+
+  accounts: NextAuthAccount[]
+  sessions: NextAuthSession[]
 }
 
 /**
@@ -53,26 +87,23 @@ type UserRelations = {
  */
 
 type Address = AddressRequire &
-  TableId<number> &
-  TableDate &
+  PrismaTableId<number> &
+  PrismaTableDate &
   Partial<AddressOptional>
 
 type AddressRequire = {
   name: string
   recipient: string
   phone: number
-  post_code: number
-  address_base: string
-  user: User
+  postCode: number
+  addressBase: string
+  user: PrismaUser
+  userId: string
 }
 
 type AddressOptional = {
-  address_detail: string
+  addressDetail: string
   message: string
-}
-
-type AddressRelationIds = {
-  user_id: string
 }
 
 /**
@@ -81,8 +112,8 @@ type AddressRelationIds = {
  */
 
 type Product = ProductRequire &
-  TableId<string> &
-  TableDate &
+  PrismaTableId<string> &
+  PrismaTableDate &
   Partial<ProductOptional & ProductRelations>
 
 type ProductRequire = {
@@ -103,7 +134,7 @@ type ProductOptional = {
 }
 
 type ProductRelationIds = {
-  category_id: number
+  categoryId: number
 }
 
 type ProductRelations = {
@@ -120,8 +151,8 @@ type ProductRelations = {
  * 데이터베이스 상품 목록 타입
  */
 
-type ProductInventory = TableId<number> &
-  TableDate &
+type ProductInventory = PrismaTableId<number> &
+  PrismaTableDate &
   ProductInventoryRequire &
   Partial<ProductInventoryRelations & ProductInventoryRelationIds>
 
@@ -133,9 +164,9 @@ type ProductInventoryRequire = {
 }
 
 type ProductInventoryRelationIds = {
-  product_id: string
-  color_id: number
-  size_id: number
+  productId: string
+  colorId: number
+  sizeId: number
 }
 
 type ProductInventoryRelations = {
@@ -148,13 +179,13 @@ type ProductInventoryRelations = {
  * 데이터베이스 카테고리 타입
  */
 
-type Category = TableDate &
-  TableId<number> &
+type Category = PrismaTableDate &
+  PrismaTableId<number> &
   CategoryRequire &
   Partial<CategoryRelations>
 
 type CategoryRequire = {
-  full_name: string
+  fullName: string
   names: string[]
 }
 
@@ -167,8 +198,8 @@ type CategoryRelations = {
  * 데이터베이스 색상 타입
  */
 
-type Color = TableDate &
-  TableId<number> &
+type Color = PrismaTableDate &
+  PrismaTableId<number> &
   ColorRequire &
   Partial<ColorRelations>
 
@@ -186,7 +217,10 @@ type ColorRelations = {
  * 데이터베이스 사이즈 타입
  */
 
-type Size = TableDate & TableId<number> & SizeRequire & Partial<SizeRelations>
+type Size = PrismaTableDate &
+  PrismaTableId<number> &
+  SizeRequire &
+  Partial<SizeRelations>
 
 type SizeRequire = {
   name: string
@@ -202,8 +236,8 @@ type SizeRelations = {
  * 데이터베이스 사이즈 타입
  */
 
-type Discount = TableDate &
-  TableId<number> &
+type Discount = PrismaTableDate &
+  PrismaTableId<number> &
   DiscountRequire &
   Partial<DiscountOptional & DiscountRelations>
 
@@ -227,16 +261,19 @@ type DiscountRelations = {
  * 데이터베이스 좋아요 타입
  */
 
-type Like = TableDate & TableId<number> & LikeRequire & Partial<LikeRelationIds>
+type Like = PrismaTableDate &
+  PrismaTableId<number> &
+  LikeRequire &
+  Partial<LikeRelationIds>
 
 type LikeRequire = {
-  user: User
+  user: PrismaUser
   product: Product
 }
 
 type LikeRelationIds = {
-  user_id: string
-  product_id: string
+  userId: string
+  productId: string
 }
 
 /**
@@ -244,19 +281,22 @@ type LikeRelationIds = {
  * 데이터베이스 장바구니 타입
  */
 
-type Cart = TableDate & TableId<number> & CartRequire & Partial<CartRelationIds>
+type Cart = PrismaTableDate &
+  PrismaTableId<number> &
+  CartRequire &
+  Partial<CartRelationIds>
 
 type CartRequire = {
   qty: 1
-  user: User
+  user: PrismaUser
   product: Product
-  product_inventory: ProductInventory
+  productInventory: ProductInventory
 }
 
 type CartRelationIds = {
-  user_id: string
-  product_id: string
-  product_inventory_id: string
+  userId: string
+  productId: string
+  productInventoryId: string
 }
 
 /**
@@ -264,20 +304,20 @@ type CartRelationIds = {
  * 데이터베이스 주문 타입
  */
 
-type Order = TableDate &
-  TableId<string> &
+type Order = PrismaTableDate &
+  PrismaTableId<string> &
   OrderRequire &
   Partial<OrderRelationIds & OrderRelations>
 
 type OrderRequire = {
   total: number
-  user: User
+  user: PrismaUser
   payment: Payment
 }
 
 type OrderRelationIds = {
-  user_id: string
-  payment_id: string
+  userId: string
+  paymentId: string
 }
 
 type OrderRelations = {
@@ -289,8 +329,8 @@ type OrderRelations = {
  * 데이터베이스 주문내역 타입
  */
 
-type OrderItem = TableDate &
-  TableId<string> &
+type OrderItem = PrismaTableDate &
+  PrismaTableId<string> &
   OrderItemRequire &
   Partial<OrderItemOptional & OrderItemRelationIds & OrderItemRelations>
 
@@ -298,19 +338,19 @@ type OrderItemRequire = {
   qty: number
   order: Order
   product: Product
-  product_inventory: ProductInventory
+  productInventory: ProductInventory
 }
 
 type OrderItemOptional = {
-  delivery_status: number
-  is_refund: boolean
+  deliveryStatus: number
+  isRefund: boolean
 }
 
 type OrderItemRelationIds = {
-  order_id: string
-  product_id: string
-  product_inventory_id: string
-  discount_id: string
+  orderId: string
+  productId: string
+  productInventoryId: string
+  discountId: string
 }
 
 type OrderItemRelations = {
@@ -323,27 +363,27 @@ type OrderItemRelations = {
  * 데이터베이스 결제 타입
  */
 
-type Payment = TableDate &
-  TableId<string> &
+type Payment = PrismaTableDate &
+  PrismaTableId<string> &
   PaymentRequire &
   Partial<PaymentOptional & PaymentRelationIds & PaymentRelations>
 
 type PaymentRequire = {
   order: Order
   method: string
-  method_name: string
-  purchased_at: Date
+  methodName: string
+  purchasedAt: Date
 }
 
 type PaymentOptional = {
-  order_name: string
-  card_name: string
-  card_no: string
-  receipt_url: string
+  orderName: string
+  cardName: string
+  cardNo: string
+  receiptUrl: string
 }
 
 type PaymentRelationIds = {
-  order_id: string
+  orderId: string
 }
 
 /**
@@ -351,16 +391,16 @@ type PaymentRelationIds = {
  * 데이터베이스 리뷰 타입
  */
 
-type Review = TableDate &
-  TableId<string> &
+type Review = PrismaTableDate &
+  PrismaTableId<string> &
   ReviewRequire &
   Partial<ReviewOptional & ReviewRelationIds & ReviewRelations>
 
 type ReviewRequire = {
   score: number
-  user: User
+  user: PrismaUser
   product: Product
-  order_item: OrderItem
+  orderItem: OrderItem
 }
 
 type ReviewOptional = {
@@ -368,7 +408,7 @@ type ReviewOptional = {
 }
 
 type ReviewRelationIds = {
-  user_id: string
-  product_id: string
-  order_item_id: string
+  userId: string
+  productId: string
+  orderItemId: string
 }

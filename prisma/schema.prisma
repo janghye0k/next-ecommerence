@@ -14,44 +14,76 @@ generator client {
 //   provider = "prisma-dbml-generator"
 // }
 
-enum Provider {
-  credentials
-  kakao
-  google
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id String @default(cuid()) @id
-  email String @unique()
-  provider Provider? @default(credentials)
-  name String
-  brithday DateTime?
-  pwd String? 
-  image String?
-  tall Int?
-  weight Int? 
-  addresses Address[] 
-  likes Like[]
-  carts Cart[]
-  orders Order[]
-  reviews Review[]
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  id            String    @id @default(cuid())
+  name          String?
+  username      String    @unique
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  pwd           String?
+  brithday      DateTime?
+  tall          Int?
+  weight        Int?
+  accounts      Account[]
+  sessions      Session[]
+  addresses     Address[] 
+  likes         Like[]
+  carts         Cart[]
+  orders        Order[]
+  reviews       Review[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt() 
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 model Address {
-  id Int @default(autoincrement()) @id()
-  user User @relation(fields: [userId], references: [id])
-  userId String @map("user_id") 
-  name String
-  recipient String
-  phone Int
-  postCode Int @map("post_code")
-  addressBase String @map("address_base")
-  addressDetail String? @map("address_detail")
-  message String?
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  id            Int       @default(autoincrement()) @id()
+  user          User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String 
+  name          String
+  recipient     String
+  phone         Int
+  postCode      Int 
+  addressBase   String 
+  addressDetail String? 
+  message       String?
+  createdAt     DateTime  @default(now()) 
+  updatedAt     DateTime  @updatedAt() 
 }
 
 model Product {
@@ -72,34 +104,34 @@ model Product {
   inventory ProductInventory[]
   orders OrderItem[]
   category Category @relation(fields: [categoryId], references: [id])
-  categoryId Int @map("category_id")
+  categoryId Int 
   reviews Review[]
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt() 
 }
 
 model ProductInventory {
   id Int @default(autoincrement()) @id()
-  productId String @map("product_id")
-  product Product @relation(fields: [productId], references: [id])
-  colorId Int @map("color_id")
+  productId String 
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  colorId Int 
   color Color @relation(fields: [colorId], references: [id])
-  sizeId Int @map("size_id")
+  sizeId Int 
   size Size @relation(fields: [sizeId], references: [id])
   carts Cart[]
   orders OrderItem[]
   qty Int @default(0)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt() 
 }
 
 model Category {
   id Int @default(autoincrement()) @id()
-  fullName String @map("full_name")
+  fullName String
   names String[]
   products Product[]
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model Color {
@@ -107,8 +139,8 @@ model Color {
   name String
   code String
   products ProductInventory[]
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model Size {
@@ -116,8 +148,8 @@ model Size {
   name String
   value Int
   products ProductInventory[]
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model Discount {
@@ -128,77 +160,77 @@ model Discount {
   products Product[] 
   orders OrderItem[]
   show Boolean @default(true)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model Like {
   id Int @default(autoincrement()) @id()
-  userId String @map("user_id")
-  productId String @map("product_id")
-  user User @relation(fields: [userId] ,references: [id])
-  product Product @relation(fields: [productId], references: [id])
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  userId String
+  productId String
+  user User @relation(fields: [userId] ,references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model Cart {
   id Int @default(autoincrement()) @id()
-  userId String @map("user_id")
-  user User @relation(fields: [userId], references: [id])
-  productId String @map("product_id")
-  product Product @relation(fields: [productId], references: [id])
-  productInventoryId Int @map("product_inventory_id")
-  productInventory ProductInventory @relation(fields: [productInventoryId], references: [id], map: "product_inventory")
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productInventoryId Int
+  productInventory ProductInventory @relation(fields: [productInventoryId], references: [id], onDelete: Cascade)
   qty Int @default(1)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 
 model Order {
   id String @default(cuid()) @id()
-  userId String @map("user_id")
+  userId String
   user User @relation(fields: [userId], references: [id])
   items OrderItem[]
-  paymentId String? @unique() @map("payment_id")
+  paymentId String? @unique()
   payment Payment? 
   total Float
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model OrderItem {
   id String @default(cuid()) @id()
-  orderId String @map("order_id")
+  orderId String
   order Order @relation(fields: [orderId], references: [id])
-  productId String @map("product_id")
+  productId String
   product Product @relation(fields: [productId], references: [id])
-  productInventoryId Int @map("product_inventory_id")
-  productInventory ProductInventory @relation(fields: [productInventoryId], references: [id], map: "product_inventory")
-  discountId Int @map("discount_id")
+  productInventoryId Int
+  productInventory ProductInventory @relation(fields: [productInventoryId], references: [id])
+  discountId Int
   discount Discount? @relation(fields: [discountId], references: [id])
   qty Int
   review Review?
-  deliveryStatus Int @default(0) @map("delivery_status")
-  isRefund Boolean @default(false) @map("id_refund")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  deliveryStatus Int @default(0)
+  isRefund Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model Payment {
   id String @default(cuid()) @id()
-  orderId String @map("order_id") @unique()
+  orderId String @unique()
   order Order @relation(fields: [orderId], references: [id])
   order_name String?
   method String
-  methodName String @map("method_name")
+  methodName String
   card_name String?
   card_no String?
   receipt_url String?
-  purchasedAt DateTime @map("purchased_at")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  purchasedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model Review {
@@ -206,12 +238,12 @@ model Review {
   images String[]
   score Int
   content String
-  userId String @map("user_id")
-  productId String @map("product_id")
-  orderItemId String @map("order_item_id") @unique()
-  user User @relation(fields: [userId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
-  orderItem OrderItem @relation(fields: [orderItemId], references: [id], map: "order_item")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  userId String
+  productId String
+  orderItemId String @unique()
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderItem OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
