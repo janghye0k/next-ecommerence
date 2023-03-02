@@ -2,17 +2,10 @@ import '@/styles/sanitize.reset.css'
 import '@/scss/base/_index.scss'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { MantineProvider } from '@mantine/core'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import {
-  Hydrate,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
 import { SessionProvider } from 'next-auth/react'
 import Layout from '@/components/Layout'
-
-const queryClient = new QueryClient()
+import ReactQueryProvider from '@/components/Providers/ReactQueryProvider'
+import MantineProvider from '@/components/Providers/MantineProvider'
 
 export default function App({
   Component,
@@ -37,25 +30,17 @@ export default function App({
           href="favicons/favicon.ico"
           type="image/x-icon"
         />
+        <link rel="manifest" href="/favicons/site.webmanifest.json" />
         <title>PIIC | Next.js e-commerence</title>
       </Head>
       <SessionProvider session={session}>
-        <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools />
-          <Hydrate state={pageProps.dehydratedState}>
-            <MantineProvider
-              withGlobalStyles
-              withNormalizeCSS
-              theme={{
-                colorScheme: 'light',
-              }}
-            >
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </MantineProvider>
-          </Hydrate>
-        </QueryClientProvider>
+        <ReactQueryProvider dehydratedState={pageProps.dehydratedState}>
+          <MantineProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </MantineProvider>
+        </ReactQueryProvider>
       </SessionProvider>
     </>
   )
