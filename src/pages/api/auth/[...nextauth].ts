@@ -14,22 +14,22 @@ export const authOptions = {
     newUser: '/auth/new-user', // New users will be directed here on first sign in (leave the property out if not of interest)
   },
    */
-  /**
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
+      console.log('sign in')
       return true
     },
     async redirect({ url, baseUrl }) {
       return baseUrl
     },
     async session({ session, token, user }) {
+      console.log('session in', session)
       return session
     },
     async jwt({ token, user, account, profile, isNewUser }) {
       return token
     },
   },
-   */
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -46,7 +46,7 @@ export const authOptions = {
         },
       },
       authorize: async function authorize(credentials, req) {
-        const user = { id: '1', name: 'J Smith', email: 'jsmith@example.com' }
+        const user = null
         if (!user) {
           // If you return null then an error will be displayed advising the user to check their details.
           // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter

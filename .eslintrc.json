@@ -26,7 +26,9 @@
   "rules": {
     "semi": "off",
     "indent": "off",
+    "consistent-return": "off",
     "no-unused-vars": "off",
+    "no-useless-escape": "off",
     "no-console": "off",
     "no-nested-ternary": "off",
     "no-debugger": "off",
@@ -34,6 +36,8 @@
     "import/no-extraneous-dependencies": "off",
     "object-curly-newline": "off",
     "react/prop-types": 0,
+    "react/destructuring-assignment": "off",
+    "react/jsx-no-bind": "off",
     "react/self-closing-comp": 0,
     "react/display-name": 0,
     "react/react-in-jsx-scope": 0,
