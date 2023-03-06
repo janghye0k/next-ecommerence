@@ -14,7 +14,7 @@ import {
 } from 'next-api-decorators'
 import { CreateUserDTO } from '@/server/dto/user.dto'
 import prisma from '@/lib/prisma'
-import bcryto from 'bcrypt'
+import bcrypt from 'bcrypt'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
@@ -42,8 +42,8 @@ class UserHandler {
   ) {
     const { password, email, username, ...rest } = body
 
-    const salt = await bcryto.genSalt(saltRound)
-    const pwd = await bcryto.hash(password, salt)
+    const salt = await bcrypt.genSalt(saltRound)
+    const pwd = await bcrypt.hash(password, salt)
 
     const existEmail = await prisma.user.findUnique({ where: { email } })
     if (!!existEmail)

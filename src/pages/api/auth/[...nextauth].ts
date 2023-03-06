@@ -1,44 +1,24 @@
-import NextAuth from 'next-auth'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@/server/adapter'
-import { randomUUID } from 'crypto'
 import prisma from '@/lib/prisma'
 import bcrypt from 'bcrypt'
 import { encode, decode } from 'next-auth/jwt'
 import { setCookie, getCookie } from 'cookies-next'
 import { NextApiRequest, NextApiResponse } from 'next'
+import uuid from '@/lib/uuid'
 
 const SESSION_MAXAGE = 30 * 24 * 60 * 60 // 7 days
 
 const adapter = PrismaAdapter(prisma)
-const generate = {
-  uuid() {
-    return this.uuidv4()
-  },
-  uuidv4() {
-    return (String([1e7]) + -1e3 + -4e3 + -8e3 + -1e11).replace(
-      /[018]/g,
-      (c: any) =>
-        (
-          c ^
-          (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-        ).toString(16),
-    )
-  },
-}
-const generateSessionToken = () => {
-  return randomUUID?.() ?? generate.uuid()
-}
+const generateSessionToken = uuid
 const fromDate = (time: number, date = Date.now()) => {
   return new Date(date + time * 1000)
 }
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
-  return NextAuth(req, res, {
+export const getAuthOptions = (req: any, res: any): NextAuthOptions => {
+  return {
     adapter,
     secret: process.env.NEXTAUTH_SECRET,
     session: {
@@ -48,14 +28,13 @@ export default async function handler(
     },
     pages: {
       signOut: '/',
-      // error: '', // Error code passed in query string as ?error=
-      verifyRequest: '/auth/verify-request', // (used for check email message)
       newUser: '/account/welcome', // New users will be directed here on first sign in (leave the property out if not of interest)
     },
     jwt: {
       // Customize the JWT encode and decode functions to overwrite the default behaviour of storing the JWT token in the session  cookie when using credentials providers. Instead we will store the session token reference to the session in the database.
       encode: async ({ token, secret, maxAge }) => {
         if (
+          typeof req.query !== 'undefined' &&
           req.query.nextauth?.includes('callback') &&
           req.query.nextauth?.includes('credentials') &&
           req.method === 'POST'
@@ -72,6 +51,7 @@ export default async function handler(
       },
       decode: async ({ token, secret }) => {
         if (
+          typeof req.query !== 'undefined' &&
           req.query.nextauth?.includes('callback') &&
           req.query.nextauth?.includes('credentials') &&
           req.method === 'POST'
@@ -113,7 +93,8 @@ export default async function handler(
         const findUser = await prisma.user.findUnique({
           where: { email: user.email || '' },
         })
-        if (!findUser) return `?redirect_from=signin&${provider}=${user.email}`
+        if (!findUser)
+          return `/account/new?redirect_from=signin&${provider}=${user.email}`
 
         // Case first social login, create account (provider = google)
         // 소셜로그인을 처음 진행하는경우 provider가 google인 계정을 생성해준다.
@@ -152,10 +133,10 @@ export default async function handler(
       CredentialsProvider({
         name: 'Credentials',
         credentials: {
-          email: {
-            label: '이메일',
+          username: {
+            label: '아이디',
             type: 'text',
-            placeholder: '이메일을 입력하세요.',
+            placeholder: '아이디를 입력하세요.',
           },
           password: {
             label: '비밀번호',
@@ -166,9 +147,9 @@ export default async function handler(
         authorize: async function authorize(credentials) {
           if (!credentials) return null
 
-          const { email, password } = credentials
+          const { username, password } = credentials
           const user = (await prisma.user.findUnique({
-            where: { email },
+            where: { username },
           })) as PrismaUser | null
 
           if (!user) return null // 찾은 유저가 없을경우 실패
@@ -186,5 +167,12 @@ export default async function handler(
         clientSecret: process.env.GOOGLE_SECRET,
       }),
     ],
-  })
+  }
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  return NextAuth(req, res, getAuthOptions(req, res))
 }

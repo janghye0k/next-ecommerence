@@ -2,7 +2,7 @@
  * Next Auth Database
  */
 
-type NextAuthAccount = {
+type PrismaAccount = {
   id: string
   userId: string
   type: string
@@ -16,7 +16,7 @@ type NextAuthAccount = {
   session_state?: string
 }
 
-type NextAuthSession = {
+type PrismaSession = {
   id: string
   sessionToken: string
   userId: string
@@ -24,7 +24,7 @@ type NextAuthSession = {
   user: PrismaUser
 }
 
-type NextAuthVerificationToken = {
+type PrismaVerificationToken = {
   identifier: string
   token: string
   expires: Date
@@ -62,6 +62,7 @@ type PrismaUserRequire = {
 }
 
 type PrismaUserOptional = {
+  role: number
   pwd: string
   birthday: Date
   image: string
@@ -77,8 +78,8 @@ type PrismaUserRelations = {
   orders: Order[]
   reviews: Review[]
 
-  accounts: NextAuthAccount[]
-  sessions: NextAuthSession[]
+  accounts: PrismaAccount[]
+  sessions: PrismaSession[]
 }
 
 /**
@@ -89,7 +90,7 @@ type PrismaUserRelations = {
 type Address = AddressRequire &
   PrismaTableId<number> &
   PrismaTableDate &
-  Partial<AddressOptional>
+  Partial<AddressOptional & AddressRelations>
 
 type AddressRequire = {
   name: string
@@ -104,6 +105,10 @@ type AddressRequire = {
 type AddressOptional = {
   addressDetail: string
   message: string
+}
+
+type AddressRelations = {
+  orders: Order[]
 }
 
 /**
@@ -313,11 +318,13 @@ type OrderRequire = {
   total: number
   user: PrismaUser
   payment: Payment
+  address: Address
 }
 
 type OrderRelationIds = {
   userId: string
   paymentId: string
+  addressId: string
 }
 
 type OrderRelations = {
