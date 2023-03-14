@@ -1,32 +1,9 @@
-<!DOCTYPE html>
-<html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PIIC</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Keania+One&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      * {
-        text-align: center;
-      }
-      .logo {
-        font-family: 'Keania One', cursive;
-      }
-    </style>
-  </head>
-  <body>
-    <h1 class="title"><span class="logo">PIIC</span></h1>
-    <div class="content">
-      Please click the link below to complete the email verification.
-    </div>
-    <div class="codebox">
-     <span class="code">{{code}}</span>
-    </div>
-  </body>
-</html>
+<div style="text-align: center;">
+  <h1 class="title"><span class="logo" style="font-family: fantasy;">PIIC</span></h1>
+  <div class="content">
+    Please check code to complete the email verification.
+  </div>
+  <div class="codebox"  style="border: 1px solid lightgray; display: inline-block; padding: 1rem 0; width: 160px; margin-top: 30px; font-size: 1.3rem; font-weight: bold;">
+    <span class="code">{{code}}</span>
+  </div>
+</div>

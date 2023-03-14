@@ -6,6 +6,8 @@ declare namespace NodeJS {
     GOOGLE_ID: string
     GOOGLE_SECRET: string
     DATABASE_URL: string
+    SUPABASE_STORAGE_URL: string
+    SUPABASE_SERVICE_KEY: string
     NODEMAILER_USER: string
     NODEMAILER_PASSWORD: string
   }

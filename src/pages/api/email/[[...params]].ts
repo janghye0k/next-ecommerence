@@ -16,17 +16,15 @@ import { resolve } from 'path'
 import { readFileSync } from 'fs'
 import handlebars from 'handlebars'
 import AuthGuard from '@/server/gurad/auth.guard'
+import { NextAuthSession } from '@/types/next-auth'
 
 class EmailHandler {
   @Post('/verification')
-  @AuthGuard()
   async sendEmail(
     @Req() req: NextApiRequest,
     @Res() res: NextApiResponse,
     @Body(ValidationPipe) { email }: EmailDTO,
-    @GetSession() session: any,
   ) {
-    return console.log(session)
     const random = Math.random().toFixed(6).slice(2)
     const salt = await bcrypt.genSalt(13)
     const hashedRandom = await bcrypt.hash(random, salt)
@@ -48,7 +46,7 @@ class EmailHandler {
       from: 'd0or.hyeok@gmail.com',
       to: email,
       subject: '[PIIC | Sign up] Email verification code',
-      html: template({ baseUrl: process.env.NEXTAUTH_URL, token: random }),
+      html: template({ code: random }),
     })
 
     return res
@@ -61,6 +59,7 @@ class EmailHandler {
   async sendResetPasswordLink(
     @Req() req: NextApiRequest,
     @Res() res: NextApiResponse,
+    @GetSession() session: NextAuthSession,
   ) {
     const random = Math.random().toFixed(6).slice(2)
     const salt = await bcrypt.genSalt(13)
@@ -79,9 +78,9 @@ class EmailHandler {
     const transporter = createTransporter()
     transporter.sendMail({
       from: 'd0or.hyeok@gmail.com',
-      to: email,
+      to: session.user.email,
       subject: '[PIIC] Password reset link',
-      html: template({ code: random }),
+      html: template({ baseUrl: process.env.NEXTAUTH_URL, token: random }),
     })
 
     return res
