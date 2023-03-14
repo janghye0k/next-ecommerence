@@ -7,14 +7,14 @@ const secret = process.env.NEXTAUTH_SECRET
 const notAuthPaths = ['/account/new', '/account/join']
 
 export async function middleware(req: NextRequest, event: NextFetchEvent) {
-  const session = await getToken({ req, secret, raw: true })
+  const sessionToken = await getToken({ req, secret, raw: true })
   const { pathname } = req.nextUrl
 
   const isNotAuthPath = notAuthPaths.some((path) => pathname.startsWith(path))
-  if (session && isNotAuthPath) {
+  if (sessionToken && isNotAuthPath) {
     return NextResponse.redirect(new URL('/', req.url))
   }
-  if (!session && !isNotAuthPath) {
+  if (!sessionToken && !isNotAuthPath) {
     return NextResponse.redirect(new URL('/', req.url))
   }
 }

@@ -33,13 +33,18 @@ function SignIn({ onClose, ...props }: SignInProps) {
 
   const form = useForm({
     initialValues: {
-      email: '',
+      username: '',
       password: '',
     },
     validate: {
-      email: (value) => {
-        const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
-        return regex.test(value) ? null : 'Invalid Email'
+      // email: (value) => {
+      //   const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+      //   return regex.test(value) ? null : 'Invalid Email'
+      // },
+      username: (value) => {
+        return value.length < 6
+          ? 'Username must be at least 6 characters long'
+          : null
       },
       password: (value) => {
         return value.length < 6
@@ -96,16 +101,16 @@ function SignIn({ onClose, ...props }: SignInProps) {
               title="Sign in failed"
               color="red"
             >
-              Please check your email or password
+              Please check your username or password
             </Alert>
           ) : null}
           <form ref={formRef}>
             <TextInput
-              id="email"
-              label="Email"
-              type="email"
-              placeholder="Your email"
-              {...form.getInputProps('email')}
+              id="username"
+              label="Username"
+              type="username"
+              placeholder="Your username"
+              {...form.getInputProps('username')}
             />
             <PasswordInput
               label="Password"
