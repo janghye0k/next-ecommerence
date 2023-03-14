@@ -6,6 +6,14 @@ import { SessionProvider } from 'next-auth/react'
 import Layout from '@/components/Layout'
 import ReactQueryProvider from '@/components/Providers/ReactQueryProvider'
 import MantineProvider from '@/components/Providers/MantineProvider'
+import axios from 'axios'
+import qs from 'qs'
+
+axios.defaults.paramsSerializer = {
+  serialize: (params: any) => {
+    return qs.stringify(params, { arrayFormat: 'repeat' })
+  },
+}
 
 export default function App({
   Component,

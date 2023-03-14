@@ -8,16 +8,16 @@ import {
 
 export class CreateUserDTO {
   @IsNotEmpty()
-  @IsEmail()
-  email!: string
+  @IsString()
+  username!: string
 
   @IsNotEmpty()
   @IsString()
   password!: string
 
   @IsNotEmpty()
-  @IsString()
-  username!: string
+  @IsEmail()
+  email!: string
 
   @IsNotEmpty()
   @IsString()
@@ -26,8 +26,4 @@ export class CreateUserDTO {
   @IsOptional()
   @IsDate()
   birthday!: Date
-
-  @IsOptional()
-  @IsString()
-  google!: string
 }

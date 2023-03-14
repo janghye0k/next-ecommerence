@@ -1,12 +1,14 @@
-import Head from 'next/head'
 import axios from 'axios'
+import Head from 'next/head'
 
 export default function Home() {
   const test = async () => {
-    axios.post('/api/email/verification', {
-      email: 'd0or_hyeok@naver.com',
+    const res = await axios.get('/api/user/info', {
+      params: { includes: ['reviews', 'orders'] },
     })
+    console.log(res.data)
   }
+
   return (
     <>
       <Head>
