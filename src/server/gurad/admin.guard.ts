@@ -7,7 +7,6 @@ import {
   UnauthorizedException,
 } from 'next-api-decorators'
 import { getServerSession } from 'next-auth'
-import prisma from '@/lib/prisma'
 
 const AdminGuard = createMiddlewareDecorator(
   async (req: NextAuthApiRequest, res: NextApiResponse, next: NextFunction) => {

@@ -4,6 +4,7 @@ import createTransporter from '@/lib/nodemailer'
 import { EmailDTO } from '@/server/dto/email.dto'
 import {
   Body,
+  Catch,
   createHandler,
   Post,
   Req,
@@ -17,10 +18,16 @@ import { readFileSync } from 'fs'
 import handlebars from 'handlebars'
 import AuthGuard from '@/server/gurad/auth.guard'
 import { NextAuthSession } from '@/types/next-auth'
+import exceptionHandler from '@/server/exception'
 
+@Catch(exceptionHandler)
 class EmailHandler {
   @Post('/verification')
   async sendEmail(
+    /**
+     * 인증 메일을 전송한다.
+     * 해쉬된 랜덤 숫자와 인증메일로 보낸 랜덤숫자를 비교하여 인증을 진행한다.
+     */
     @Req() req: NextApiRequest,
     @Res() res: NextApiResponse,
     @Body(ValidationPipe) { email }: EmailDTO,
@@ -29,7 +36,7 @@ class EmailHandler {
     const salt = await bcrypt.genSalt(13)
     const hashedRandom = await bcrypt.hash(random, salt)
 
-    const maxAge = 60 * 2
+    const maxAge = 60 * 2 // 인증유효시간 (2분)
 
     setCookie('piic.email-verification', hashedRandom, {
       maxAge,

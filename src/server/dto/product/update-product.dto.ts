@@ -1,23 +1,27 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator'
 
-export class ProductDTO {
-  @IsNotEmpty()
+export class UpdateProductDTO {
+  @IsOptional()
   @IsString()
   thumbnail!: string
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString({ each: true })
   images!: string[]
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   name!: string
+
+  @IsOptional()
+  @IsNumber()
+  categoryId!: number
 
   @IsOptional()
   @IsString()
   description!: string
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   price!: number
 
@@ -36,4 +40,8 @@ export class ProductDTO {
   @IsOptional()
   @IsString()
   opacity!: string
+
+  @IsOptional()
+  @IsBoolean()
+  show!: boolean
 }

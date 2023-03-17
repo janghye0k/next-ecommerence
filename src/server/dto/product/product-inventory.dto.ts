@@ -1,6 +1,13 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
+import { Type } from 'class-transformer'
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  ValidateNested,
+} from 'class-validator'
 
-export class ProductInventoryDTO {
+class InventoryDTO {
   @IsNotEmpty()
   @IsString()
   productId!: string
@@ -16,4 +23,11 @@ export class ProductInventoryDTO {
   @IsNotEmpty()
   @IsNumber()
   qty!: number
+}
+
+export class ProductInventoryDTO {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => InventoryDTO)
+  inventorys!: InventoryDTO[]
 }

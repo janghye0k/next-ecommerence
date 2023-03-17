@@ -1,5 +1,6 @@
+import { AddressDTO } from './address.dto'
 import { UpdateUserDTO } from './update-user.dto'
 import { ChangeRoleDTO } from './change-role.dto'
 import { CreateUserDTO } from './create-user.dto'
 
-export { CreateUserDTO, ChangeRoleDTO, UpdateUserDTO }
+export { CreateUserDTO, ChangeRoleDTO, UpdateUserDTO, AddressDTO }

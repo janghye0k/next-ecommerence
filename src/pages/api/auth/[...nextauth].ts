@@ -124,6 +124,7 @@ export const getAuthOptions = (req: any, res: any): NextAuthOptions => {
         if (token) {
           session.id = token.id as string
         }
+        delete user.pwd
         session.user = { ...session.user, ...(user as PrismaUser) }
         return session
       },

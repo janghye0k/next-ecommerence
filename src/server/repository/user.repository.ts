@@ -73,6 +73,7 @@ const USER_OPTIONS = {
   },
 }
 
+/** 유저 테이블과 연관된 릴레이션을 조회하는 옵션을 가져온다. */
 export function findUserOption(
   includes?: UserRelationColumn | UserRelationColumn[],
 ) {
@@ -80,6 +81,7 @@ export function findUserOption(
     includes = USER_RELATIONS
   } else if (!Array.isArray(includes)) includes = [includes]
 
+  // 연결되지 않은 릴레이션을 요청하면 오류를 전송한다.
   const badRequest = includes.some((value) => !USER_RELATIONS.includes(value))
   if (badRequest)
     throw new BadRequestException(

@@ -1,5 +1,6 @@
 import {
   Body,
+  Catch,
   createHandler,
   Delete,
   Get,
@@ -19,7 +20,9 @@ import {
   CategoryDTO,
   DiscountDTO,
 } from '@/server/dto/option'
+import exceptionHandler from '@/server/exception'
 
+@Catch(exceptionHandler)
 class OptionHandler {
   @Get('/categorys')
   public async getCategorys(@Res() res: NextApiResponse) {
