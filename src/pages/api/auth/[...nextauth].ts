@@ -72,11 +72,22 @@ export const getAuthOptions = (req: any, res: any): NextAuthOptions => {
           const sessionToken = generateSessionToken()
           const sessionExpiry = fromDate(SESSION_MAXAGE)
 
-          await adapter.createSession({
-            sessionToken,
-            userId: user.id,
-            expires: sessionExpiry,
+          const findSession = await prisma.session.findFirst({
+            where: { userId: user.id },
           })
+
+          const querys = []
+          if (!!findSession)
+            querys.push(adapter.deleteSession(findSession.sessionToken))
+          querys.push(
+            adapter.createSession({
+              sessionToken,
+              userId: user.id,
+              expires: sessionExpiry,
+            }),
+          )
+          await Promise.all(querys)
+
           setCookie('next-auth.session-token', sessionToken, {
             expires: sessionExpiry,
             req,

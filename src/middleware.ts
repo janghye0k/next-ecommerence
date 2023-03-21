@@ -15,15 +15,14 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
     return NextResponse.redirect(new URL('/', req.url))
   }
   if (!sessionToken && !isNotAuthPath) {
-    return NextResponse.redirect(new URL('/', req.url))
+    return NextResponse.redirect(new URL('/account/join', req.url))
   }
 }
 
 export const config = {
   matcher: [
-    // only for not auth
-    '/account/new',
-    '/account/join',
     // only for auth
+    '/account',
+    '/account/:path*',
   ],
 }

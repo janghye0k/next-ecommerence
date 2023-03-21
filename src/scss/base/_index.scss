@@ -1,32 +1,21 @@
-@use './color.scss' as *;
-@import url('https://fonts.googleapis.com/css2?family=Keania+One&display=swap');
+@font-face {
+  font-family: 'Keania One';
+  src: url('../../../public/fonts/KeaniaOne-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../../../public/fonts/NotoSansKR-Regular.otf');
+}
 
 :root {
   --logo-font: 'Keania One', cursive;
-
-  --primary-varient: #{$primary-varient};
-
-  --secondary-color: #{$secondary};
-  --secondary-rgb: #{$secondary-rgb};
-  --secondary-gradient: #{$secondary-gradient};
-}
-
-:root,
-:root[data-theme='light'] {
-  --primary-color: #{$primary};
-  --primary-rgb: #{$primary-rgb};
-  --primary-gradient: #{$primary-gradient};
-}
-
-:root[data-theme='dark'] {
-  --primary-color: #{$dark-primary};
-  --primary-rgb: #{$dark-primary-rgb};
-  --primary-gradient: #{$dark-primary-gradient};
 }
 
 html,
 body {
   font-size: 16px;
+  font-family: 'NotoSansKR', sans-serif;
 }
 
 a {

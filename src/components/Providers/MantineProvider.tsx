@@ -41,6 +41,30 @@ const colors: Colors = {
     '#37474F',
     '#263238',
   ],
+  main: [
+    '#C41E20',
+    '#C41E20',
+    '#C41E20',
+    '#C41E20',
+    '#C41E20',
+    '#C41E20',
+    '#C41E20',
+    '#C41E20',
+    '#C41E20',
+    '#C41E20',
+  ],
+  sub: [
+    '#183582',
+    '#183582',
+    '#183582',
+    '#183582',
+    '#183582',
+    '#183582',
+    '#183582',
+    '#183582',
+    '#183582',
+    '#183582',
+  ],
 }
 
 function MantineProvider({ children }: any) {
@@ -51,7 +75,8 @@ function MantineProvider({ children }: any) {
       theme={{
         colors,
         colorScheme: 'light',
-        primaryColor: 'teal',
+        primaryColor: 'dark',
+        fontFamily: "'NotoSansKR', sans-serif",
       }}
     >
       {children}

@@ -1,0 +1,169 @@
+@use '@/scss/helpers/mixin';
+
+$max-width: 1400px;
+$header-item-height: 48px;
+
+.inherit {
+  color: inherit;
+}
+
+.footer {
+  min-width: 463px;
+}
+
+.header__wrapper,
+.main,
+.footer__wrapper {
+  margin: 0 auto;
+  max-width: $max-width;
+}
+
+.header__wrapper {
+  max-width: calc($max-width - 32px);
+}
+
+.header {
+  transition: ease all 0.1s;
+  &.transparent:not(:hover) {
+    border-width: 0;
+    background: none;
+  }
+}
+
+.header__wrapper {
+  @include mixin.flex;
+  align-items: center;
+  gap: 1rem;
+  &,
+  & > * {
+    height: $header-item-height;
+  }
+}
+
+.header__logo {
+  font-size: $header-item-height;
+  height: $header-item-height;
+  line-height: $header-item-height;
+}
+
+.header-menu {
+  margin: 0 auto;
+}
+
+.header-menu [role='tablist'] {
+  @include mixin.flex;
+  margin: 0;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-menu [role='tablist'] [role='tab'] {
+  position: relative;
+  & a {
+    color: inherit;
+  }
+  &,
+  & a {
+    height: $header-item-height;
+    line-height: $header-item-height;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+
+    background-color: black;
+    width: 0;
+    height: 3px;
+    transition: ease 0.2s width;
+  }
+
+  &:hover {
+    &::after {
+      width: 80%;
+    }
+  }
+}
+
+.header-buttons {
+  @include mixin.flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-buttons__button {
+  width: 48px;
+  height: 48px;
+}
+
+.footer__wrapper {
+  @media screen and (max-width: calc($max-width + 1rem)) {
+  }
+}
+
+.footer-info {
+  @include mixin.flex;
+  justify-content: space-between;
+  font-size: 0.85em;
+
+  & a {
+    color: inherit;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.footer-desc__group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: 0.85em;
+  flex-wrap: wrap;
+
+  &:not(:last-child) {
+    margin-bottom: 0.25rem;
+  }
+}
+
+.footer-desc__group span {
+  flex-shrink: 0;
+}
+
+.footer-desc__group [role='separator'] {
+  margin: auto 0.5rem;
+  height: 12px;
+}
+
+@media screen and (max-width: 767px) {
+  .header__wrapper {
+    gap: 0;
+  }
+
+  .header-menu {
+    display: none;
+  }
+
+  .header-buttons {
+    margin-left: auto;
+  }
+
+  .footer-desc__group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-desc__group [role='separator'] {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .footer-info {
+    flex-direction: column-reverse;
+    gap: 1rem;
+  }
+}
