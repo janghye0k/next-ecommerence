@@ -1,7 +1,6 @@
 @use '@/scss/helpers/mixin';
 
 $max-width: 1400px;
-$header-item-height: 48px;
 
 .inherit {
   color: inherit;
@@ -24,7 +23,7 @@ $header-item-height: 48px;
 
 .header {
   transition: ease all 0.1s;
-  &.transparent:not(:hover) {
+  &.transparent:not(:hover, .menu-opened) {
     border-width: 0;
     background: none;
   }
@@ -36,14 +35,16 @@ $header-item-height: 48px;
   gap: 1rem;
   &,
   & > * {
-    height: $header-item-height;
+    height: 48px;
   }
 }
 
 .header__logo {
-  font-size: $header-item-height;
-  height: $header-item-height;
-  line-height: $header-item-height;
+  $logo-size: 48px;
+
+  font-size: $logo-size;
+  height: $logo-size;
+  line-height: $logo-size;
 }
 
 .header-menu {
@@ -53,37 +54,40 @@ $header-item-height: 48px;
 .header-menu [role='tablist'] {
   @include mixin.flex;
   margin: 0;
-  gap: 1rem;
   align-items: center;
   justify-content: center;
 }
 
 .header-menu [role='tablist'] [role='tab'] {
   position: relative;
+  padding: 0 0.5rem;
   & a {
+    display: inline-block;
     color: inherit;
-  }
-  &,
-  & a {
-    height: $header-item-height;
-    line-height: $header-item-height;
+    height: 80px;
+    line-height: 80px;
+    margin-top: -16px;
   }
 
   &::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 10%;
+    bottom: -3px;
+    left: calc(0.5rem);
 
-    background-color: black;
+    background-image: linear-gradient(
+      to bottom,
+      black 50%,
+      rgba(0, 0, 0, 0) 50%
+    );
     width: 0;
-    height: 3px;
+    height: 7px;
     transition: ease 0.2s width;
   }
 
   &:hover {
     &::after {
-      width: 80%;
+      width: calc(100% - 1rem);
     }
   }
 }
@@ -94,9 +98,14 @@ $header-item-height: 48px;
   justify-content: center;
 }
 
-.header-buttons__button {
-  width: 48px;
-  height: 48px;
+.header-buttons__burger {
+  display: none;
+
+  width: 48;
+  height: 48;
+  & > div {
+    margin: auto;
+  }
 }
 
 .footer__wrapper {
@@ -138,7 +147,7 @@ $header-item-height: 48px;
   height: 12px;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
   .header__wrapper {
     gap: 0;
   }
@@ -151,6 +160,10 @@ $header-item-height: 48px;
     margin-left: auto;
   }
 
+  .header-buttons__burger {
+    display: block;
+  }
+
   .footer-desc__group {
     flex-direction: column;
     align-items: flex-start;
@@ -161,7 +174,7 @@ $header-item-height: 48px;
   }
 }
 
-@media screen and (max-width: 575px) {
+@media screen and (max-width: 576px) {
   .footer-info {
     flex-direction: column-reverse;
     gap: 1rem;

@@ -4,7 +4,7 @@ import { getToken } from 'next-auth/jwt'
 
 const secret = process.env.NEXTAUTH_SECRET
 
-const notAuthPaths = ['/account/new', '/account/join']
+const notAuthPaths = ['/account/new', '/account/join', '/account/signin']
 
 export async function middleware(req: NextRequest, event: NextFetchEvent) {
   const sessionToken = await getToken({ req, secret, raw: true })

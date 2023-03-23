@@ -1,10 +1,15 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import {
   ActionIcon,
   Header as MantineHeader,
   Indicator,
   Menu,
   Text,
+  createStyles,
+  Burger,
+  Drawer,
+  Box,
+  List,
 } from '@mantine/core'
 import { signOut, useSession } from 'next-auth/react'
 import {
@@ -12,17 +17,16 @@ import {
   IconLogin,
   IconLogout,
   IconSearch,
-  IconShoppingCart,
+  IconShoppingBag,
   IconTruckDelivery,
   IconUser,
   IconUserCircle,
   IconUserPlus,
 } from '@tabler/icons'
 import Link from 'next/link'
-import { useStyles } from '@/styles/mantine'
 import { useRouter } from 'next/router'
 import classNames from 'classnames/bind'
-import { useDisclosure } from '@mantine/hooks'
+import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 import SignIn from '../Modal/SignIn'
 import styles from './layout.module.scss'
 
@@ -32,26 +36,97 @@ type HeaderProsp = {
 
 const cx = classNames.bind(styles)
 
+const useStyles = createStyles((theme) => {
+  const linkButton = {
+    transition: 'ease .1s all',
+    '&:hover': {
+      backgroundColor: 'unset',
+      color: theme.colors.dark,
+    },
+    '&:active': {
+      transform: 'unset',
+      backgroundColor: theme.colors.gray[0],
+    },
+  }
+  return {
+    linkButton,
+    userLinkButton: {
+      ...linkButton,
+      '@media screen and (max-width:768px)': {
+        display: 'none',
+      },
+    },
+    userLinkButton_tablet: {
+      ...linkButton,
+      display: 'none',
+      '@media screen and (max-width:768px)': {
+        display: 'flex',
+      },
+    },
+    userMenuItem: {
+      width: 'fit-content',
+      cursor: 'pointer',
+      '&:hover, &:active': {
+        color: theme.colors.dark,
+      },
+    },
+  }
+})
+
 function Header({ transparent }: HeaderProsp) {
   const router = useRouter()
   const { classes } = useStyles()
-  const { status } = useSession()
+  const { status, data: session } = useSession()
 
-  const [opened, openedHandler] = useDisclosure(false)
+  const [openLogin, openLoginHandler] = useDisclosure(false)
+  const [openMenu, openMenuHandler] = useDisclosure(false)
+  const [openUser, openUserHandler] = useDisclosure(false)
 
   const isAuth = useMemo(() => status === 'authenticated', [status])
 
+  /** 버튼에 data-href 가 있는 버튼들, 페이지 이동 */
   function handleClickLinkButton(event: React.MouseEvent<HTMLElement>) {
     event.preventDefault()
-    if (window.innerWidth < 768) return
     const { href } = event.currentTarget.dataset
-    router.push(href || '#')
+    if (window.location.pathname !== href) router.push(href || '#')
   }
+
+  function handleClickSignOut(event: React.MouseEvent<HTMLElement>) {
+    event.preventDefault()
+    signOut().then(() => console.log('asdfasdf'))
+  }
+
+  /** 반응형 테블릿에서 유저아이콘 버튼 클릭시 */
+  function handleClickUserButton(event: React.MouseEvent<HTMLElement>) {
+    event.preventDefault()
+    openMenuHandler.close()
+    openUserHandler.toggle()
+  }
+
+  /** 반응형 테블릿에서 버거 버튼 클릭시 */
+  function handleClickBurgurMenu(event: React.MouseEvent<HTMLElement>) {
+    openUserHandler.close()
+    openMenuHandler.toggle()
+  }
+
+  /** 모든 모달 및 드로워를 닫는다 */
+  const closeAll = useCallback(() => {
+    openUserHandler.close()
+    openMenuHandler.close()
+    openLoginHandler.close()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      closeAll()
+    }
+  }, [router.pathname, closeAll])
 
   return (
     <>
       <MantineHeader
-        className={cx('header', { transparent })}
+        className={cx('header', { transparent, 'menu-opened': openMenu })}
         height={80}
         p="md"
       >
@@ -108,27 +183,25 @@ function Header({ transparent }: HeaderProsp) {
             </ActionIcon>
 
             {/* User Menu */}
-            <Menu trigger="hover" closeDelay={300}>
+            <Menu closeDelay={300}>
               <Menu.Target>
                 <ActionIcon
-                  className={classes.linkButton}
+                  className={classes.userLinkButton}
                   w={48}
                   h={48}
                   aria-label="user"
-                  data-href={isAuth ? '/account' : '/account/join'}
-                  onClick={handleClickLinkButton}
                 >
                   <IconUser size={30} />
                 </ActionIcon>
               </Menu.Target>
 
-              <Menu.Dropdown>
+              <Menu.Dropdown className={cx('header-buttons__drowdown')}>
                 <Menu.Label className="piic">PIIC</Menu.Label>
                 {!isAuth ? (
                   <>
                     <Menu.Item
                       icon={<IconLogin size={14} />}
-                      onClick={openedHandler.open}
+                      onClick={openLoginHandler.open}
                     >
                       Sign In
                     </Menu.Item>
@@ -156,18 +229,16 @@ function Header({ transparent }: HeaderProsp) {
                     >
                       Wishlist
                     </Menu.Item>
-
-                    <Menu.Label>Account</Menu.Label>
                     <Menu.Item
                       icon={<IconUserCircle size={14} />}
                       data-href="/account"
                       onClick={handleClickLinkButton}
                     >
-                      My Page
+                      Account
                     </Menu.Item>
                     <Menu.Item
                       icon={<IconLogout size={14} />}
-                      onClick={() => signOut()}
+                      onClick={handleClickSignOut}
                     >
                       Sign Out
                     </Menu.Item>
@@ -176,6 +247,16 @@ function Header({ transparent }: HeaderProsp) {
                 {/* <Menu.Label>Setting</Menu.Label> */}
               </Menu.Dropdown>
             </Menu>
+
+            <ActionIcon
+              className={classes.userLinkButton_tablet}
+              w={48}
+              h={48}
+              aria-label="user"
+              onClick={handleClickUserButton}
+            >
+              <IconUser size={30} />
+            </ActionIcon>
 
             {/* Cart */}
             {isAuth ? (
@@ -187,7 +268,7 @@ function Header({ transparent }: HeaderProsp) {
               >
                 <Indicator
                   inline
-                  label="1"
+                  label={session?.user.carts?.length}
                   size={18}
                   color="blue"
                   styles={{
@@ -199,15 +280,96 @@ function Header({ transparent }: HeaderProsp) {
                   }}
                 >
                   <Link className={cx('inherit')} href="/account/cart">
-                    <IconShoppingCart size={30} />
+                    <IconShoppingBag size={30} />
                   </Link>
                 </Indicator>
               </ActionIcon>
             ) : null}
+
+            <Burger
+              className={cx('header-buttons__burger')}
+              color={openMenu ? 'black' : 'gray'}
+              w={48}
+              h={48}
+              opened={openMenu}
+              onClick={handleClickBurgurMenu}
+            />
           </div>
         </nav>
       </MantineHeader>
-      <SignIn opened={opened} onClose={openedHandler.close} />
+      <SignIn opened={openLogin} onClose={openLoginHandler.close} />
+      {/* Menu Drawer */}
+      <Drawer
+        position="top"
+        lockScroll={false}
+        withCloseButton={false}
+        styles={{
+          root: { top: '80px', zIndex: 99 },
+          drawer: { top: '80px' },
+        }}
+        opened={openMenu}
+        onClose={openMenuHandler.close}
+      >
+        <Box p="md" style={{ maxWidth: '1400px' }}>
+          dasfsfasdf
+        </Box>
+      </Drawer>
+      {/* User Drawer */}
+      <Drawer
+        position="top"
+        lockScroll={false}
+        withCloseButton={false}
+        styles={{
+          root: { top: '80px', zIndex: 99 },
+          drawer: { top: '80px', height: 'auto' },
+        }}
+        opened={openUser}
+        onClose={openUserHandler.close}
+      >
+        <Box p="2rem">
+          <Text className="piic">PIIC</Text>
+          <List c="gray" classNames={{ item: classes.userMenuItem }}>
+            {isAuth ? (
+              <>
+                <List.Item icon={<IconTruckDelivery size={16} />}>
+                  <Link className={cx('inherit')} href="/account/order">
+                    Order
+                  </Link>
+                </List.Item>
+                <List.Item icon={<IconHeart size={16} />}>
+                  <Link className={cx('inherit')} href="/account/wishlist">
+                    Wishlist
+                  </Link>
+                </List.Item>
+                <List.Item icon={<IconUserCircle size={16} />}>
+                  <Link className={cx('inherit')} href="/account">
+                    Account
+                  </Link>
+                </List.Item>
+                <List.Item
+                  icon={<IconLogout size={16} />}
+                  onClick={handleClickSignOut}
+                >
+                  Sign Out
+                </List.Item>
+              </>
+            ) : (
+              <>
+                <List.Item icon={<IconLogin size={16} />}>
+                  <Link className={cx('inherit')} href="/account/signin">
+                    Sign In
+                  </Link>
+                </List.Item>
+                <List.Item icon={<IconUserPlus size={16} />}>
+                  <Link className={cx('inherit')} href="/account/new">
+                    Sign Up
+                  </Link>
+                </List.Item>
+              </>
+            )}
+          </List>
+        </Box>
+      </Drawer>
     </>
   )
 }
