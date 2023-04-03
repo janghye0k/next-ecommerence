@@ -105,7 +105,7 @@ export const getAuthOptions = (req: any, res: any): NextAuthOptions => {
           where: { email: user.email || '' },
         })
         if (!findUser)
-          return `/account/new?redirect_from=signin&${provider}=${user.email}`
+          return `/account/join?redirect_from=signin&${provider}=${user.email}`
 
         // Case first social login, create account (provider = google)
         // 소셜로그인을 처음 진행하는경우 provider가 google인 계정을 생성해준다.

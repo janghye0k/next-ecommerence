@@ -1,0 +1,19 @@
+{
+    "men": {
+        "outerwear":["down jacket", "jacket", "coat", "cardigan "],
+        "top":["sweater", "shirts", "t-shirts", "hoodie"],
+        "bottoms":["jeans", "shorts", "trouser"],
+        "homewear":["pajamas", "underwear"]
+    },
+    "women": {
+        "outerwear":["down jacket", "jacket", "coat", "cardigan "],
+        "top":["sweater", "shirts", "t-shirts", "hoodie"],
+        "bottoms":["jeans", "shorts", "trouser", "skirt"],
+        "dress": [],
+        "homewear":["pajamas", "underwear"]
+    },
+    "kids": {
+        "boys":["outerwear", "top", "bottoms", "homewear"],
+        "girls":["outerwear", "top", "bottoms", "dress", "homewear"]
+    }
+}

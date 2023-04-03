@@ -41,6 +41,7 @@
     "dayjs": "^1.11.7",
     "embla-carousel-react": "^7.0.9",
     "handlebars": "^4.7.7",
+    "immer": "^9.0.21",
     "next": "13.1.2",
     "next-api-decorators": "^2.0.2",
     "next-auth": "^4.19.2",
