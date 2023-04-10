@@ -5,7 +5,6 @@ import Head from 'next/head'
 import { SessionProvider } from 'next-auth/react'
 import Layout from '@/components/Layout'
 import ReactQueryProvider from '@/components/Providers/ReactQueryProvider'
-import MantineProvider from '@/components/Providers/MantineProvider'
 import axios from 'axios'
 import qs from 'qs'
 
@@ -43,11 +42,9 @@ export default function App({
       </Head>
       <SessionProvider session={session}>
         <ReactQueryProvider dehydratedState={pageProps.dehydratedState}>
-          <MantineProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </MantineProvider>
+          {/* <Layout> */}
+          <Component {...pageProps} />
+          {/* </Layout> */}
         </ReactQueryProvider>
       </SessionProvider>
     </>
