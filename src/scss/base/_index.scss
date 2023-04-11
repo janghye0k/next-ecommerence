@@ -9,21 +9,6 @@
 }
 
 :root {
-  --logo-font: 'Keania One', cursive;
-  --main-font: 'NotoSansKR', sans-serif;
-
-  --shadow-umbra-opacity: 0.14;
-  --shadow-penumbra-opacity: 0.12;
-  --shadow-ambient-opacity: 0.2;
-
-  --color-main: #c41e20;
-  --color-sub: #183582;
-
-  --info-main: #0288d1;
-  --success-main: #2e7d32;
-  --warning-main: #ed6c02;
-  --error-main: #d32f2f;
-
   --gray-50: #fafafa;
   --gray-100: #f5f5f5;
   --gray-200: #eeeeee;
@@ -199,10 +184,34 @@
   --brown-700: #5d4037;
   --brown-800: #4e342e;
   --brown-900: #3e2723;
+
+  --media-2xl: 96rem; // 1536px
+  --media-xl: 80rem; // 1280px
+  --media-lg: 62rem; // 992px
+  --media-md: 48rem; // 768px
+  --media-sm: 30rem; // 480px
+  --media-xs: 20rem; // 320px
+
+  --logo-font: 'Keania One', cursive;
+  --main-font: 'NotoSansKR', sans-serif;
+
+  --shadow-umbra-opacity: 0.14;
+  --shadow-penumbra-opacity: 0.12;
+  --shadow-ambient-opacity: 0.2;
+
+  --color-main: #c41e20;
+  --color-sub: #183582;
+
+  --info-main: #0288d1;
+  --success-main: #2e7d32;
+  --warning-main: #ed6c02;
+  --error-main: #d32f2f;
 }
 
 html:not([data-theme-mode='dark']) {
   // Theme
+  --text-hsl-l: 0%;
+  --bg-hsl-l: 100%;
   --text-primary: rgba(0, 0, 0, 0.87);
   --text-secondary: rgba(0, 0, 0, 0.6);
   --text-disabled: rgba(0, 0, 0, 0.38);
@@ -218,14 +227,24 @@ html:not([data-theme-mode='dark']) {
   --divider: rgba(0, 0, 0, 0.12);
 
   // Alert
-  --info-sub: #03a9f4;
-  --success-sub: #4caf50;
-  --warning-sub: #ff9800;
-  --error-sub: #ef5350;
+  --info-primary: #03a9f4;
+  --success-primary: #4caf50;
+  --warning-primary: #ff9800;
+  --error-primary: #ef5350;
+  --info-secondary: #01579b;
+  --success-secondary: #1b5e20;
+  --warning-secondary: #e65100;
+  --error-secondary: #c62828;
+
+  --input-border-color: var(--info-main);
+  --input-error-color: var(--error-main);
+  --input-valid-color: var(--success-main);
 }
 
 html[data-theme-mode='dark'] {
   // Theme
+  --text-hsl-l: 100%;
+  --bg-hsl-l: 0%;
   --text-primary: #fff;
   --text-secondary: rgba(255, 255, 255, 0.7);
   --text-disabled: rgba(255, 255, 255, 0.5);
@@ -241,10 +260,18 @@ html[data-theme-mode='dark'] {
   --divider: rgba(255, 255, 255, 0.12);
 
   // Alert
-  --info-sub: #01579b;
-  --success-sub: #1b5e20;
-  --warning-sub: #e65100;
-  --error-sub: #c62828;
+  --info-primary: #01579b;
+  --success-primary: #1b5e20;
+  --warning-primary: #e65100;
+  --error-primary: #c62828;
+  --info-secondary: #03a9f4;
+  --success-secondary: #4caf50;
+  --warning-secondary: #ff9800;
+  --error-secondary: #ef5350;
+
+  --input-border-color: var(--info-secondary);
+  --input-error-color: var(--error-secondary);
+  --input-valid-color: var(--success-secondary);
 }
 
 html,

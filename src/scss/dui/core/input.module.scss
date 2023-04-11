@@ -1,0 +1,172 @@
+$sizes: ('xs', 'sm', 'md', 'lg', 'xl');
+$l: var(--text-hsl-l);
+$error-color: var(--input-error-color);
+
+@mixin bindSize() {
+  $num: -1;
+  @each $size in $sizes {
+    $num: $num + 1;
+    $rem125: 0.125rem * $num;
+    $px125: 0.125px * $num;
+    $rem5: 0.5rem * $num;
+
+    $height: 1.5rem + $rem5;
+    $font-size: 0.75rem + $rem125;
+
+    // Input Start
+    .input.#{$size} {
+      margin: $rem125 0;
+      padding: 0 0.5rem + $rem125;
+      height: $height;
+      font-size: 0.75rem + $rem125;
+      border-radius: $rem125;
+      outline: $px125 solid transparent;
+      min-width: $height * 3;
+
+      &.icl {
+        padding-left: $height;
+      }
+      &.icr {
+        padding-right: $height;
+      }
+      &.underline {
+        border-width: 1px + 0.5px * $num;
+      }
+      &:focus {
+        outline-width: $px125;
+      }
+    }
+    // Input End
+
+    .container:has(.input.#{$size}) .iconbox {
+      top: $rem125;
+      bottom: $rem125;
+    }
+
+    .wrapper:has(.input.#{$size}) {
+      font-size: $font-size;
+
+      // Label Start
+      & .label {
+        font-size: 1em;
+        font-weight: 600;
+      }
+      // Label End
+
+      & :is(.description, .error) {
+        font-size: 0.75em;
+      }
+
+      & .description {
+        color: var(--text-secondary);
+      }
+
+      & .error {
+        color: $error-color;
+        display: none;
+      }
+    }
+
+    .wrapper:has(.input[required]) .label {
+      &::after {
+        content: ' *';
+        color: $error-color;
+      }
+    }
+
+    .wrapper:has(
+        .input:not(:placeholder-shown, .invalid-none):is(.error, :invalid)
+      )
+      .error {
+      display: block;
+    }
+  }
+}
+
+@include bindSize();
+
+.input {
+  font-family: inherit;
+  color: inherit;
+  background-color: inherit;
+  border-width: 1px;
+  border-style: solid;
+  border-color: hsla(0, 100%, $l, 0.14);
+  transition: ease all 0.1s;
+
+  &::placeholder {
+    color: initial;
+  }
+
+  &.underline {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    outline: none;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  &.filled:not(:focus) {
+    background-color: hsla(0, 100%, $l, 0.08);
+    &:hover {
+      background-color: hsla(0, 100%, $l, 0.14);
+    }
+  }
+
+  &:not(.filled, :focus):hover {
+    border-color: hsla(0, 100%, $l, 0.24);
+  }
+  &:focus {
+    $color: var(--input-border-color);
+    border-color: $color;
+    outline-color: $color;
+  }
+  &:not(:placeholder-shown, .invalid-none):invalid {
+    color: $error-color;
+    border-color: $error-color;
+    outline-color: $error-color;
+  }
+  &.valid:valid {
+    $color: var(--input-valid-color);
+    border-color: $color;
+    outline-color: $color;
+  }
+}
+
+.container {
+  width: fit-content;
+  position: relative;
+  display: inline-block;
+  cursor: text;
+
+  & .iconbox {
+    position: absolute;
+    aspect-ratio: 1/1;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0);
+    pointer-events: none;
+
+    & > * {
+      width: 66%;
+      height: 66%;
+      color: hsla(0, 100%, $l, 0.33);
+    }
+
+    &-left {
+      left: 0;
+    }
+
+    &-right {
+      right: 0;
+    }
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}

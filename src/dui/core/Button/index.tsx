@@ -1,15 +1,12 @@
 /* eslint-disable react/button-has-type */
-import React from 'react'
+import React, { forwardRef } from 'react'
 import classNames from 'classnames/bind'
-import styles from '@/scss/components/button.module.scss'
+import styles from '@/scss/dui/core/button.module.scss'
+import Dui from '@/dui/types'
 
 const cx = classNames.bind(styles)
 
-interface ButtonProps
-  extends React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  > {
+interface ButtonProps extends Dui.DefaultButtonProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   color?: ThemeColor
   variant?: 'solid' | 'ghost' | 'outline'
@@ -17,25 +14,26 @@ interface ButtonProps
   rightIcon?: React.ReactNode
 }
 
-function Button({
-  children,
-  className,
-  size = 'md',
-  variant = 'solid',
-  leftIcon,
-  rightIcon,
-  color,
-  ...props
-}: ButtonProps) {
+function BaseButton(
+  {
+    children,
+    className,
+    size = 'md',
+    variant = 'solid',
+    leftIcon,
+    rightIcon,
+    color,
+    ...props
+  }: ButtonProps,
+  ref?: Dui.CoreRef<HTMLButtonElement>,
+) {
   return (
     <button
-      className={`${cx(
-        'main',
-        `s-${size}`,
-        `v-${variant}`,
-        color ? `c-${color}` : '',
-      )} ${className}`}
+      className={`${cx('main', size, variant, {
+        [color as string]: !!color,
+      })} ${className || ''}`}
       {...props}
+      ref={ref}
       data-shadow="dp02"
       data-shadow-in="dp04"
       data-shadow-on="dp08"
@@ -46,5 +44,8 @@ function Button({
     </button>
   )
 }
+
+const Button = forwardRef(BaseButton)
+Button.displayName = 'Button'
 
 export default Button
