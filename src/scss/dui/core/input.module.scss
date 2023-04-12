@@ -114,7 +114,7 @@ $error-color: var(--input-error-color);
     }
   }
 
-  &:not(.filled, :focus):hover {
+  &:not(.filled, :focus, :disabled):hover {
     border-color: hsla(0, 100%, $l, 0.24);
   }
   &:focus {
@@ -131,6 +131,10 @@ $error-color: var(--input-error-color);
     $color: var(--input-valid-color);
     border-color: $color;
     outline-color: $color;
+  }
+
+  &:disabled {
+    background-color: var(--button-disabled-background);
   }
 }
 

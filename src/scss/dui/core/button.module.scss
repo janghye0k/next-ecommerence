@@ -55,7 +55,7 @@ $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
         background-color: $color;
 
         $color-hover: var(--#{$colorName}-#{$hover-num});
-        &:hover {
+        &:not(:disabled):hover {
           background-color: $color-hover;
         }
       }
@@ -65,7 +65,7 @@ $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
         color: $color;
 
         $color-hover: var(--#{$colorName}-#{$hover-num});
-        &:hover {
+        &:not(:disabled):hover {
           border-color: $color-hover;
         }
       }
@@ -75,7 +75,7 @@ $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
         color: $color;
 
         $color-hover: var(--#{$colorName}-#{$hover-num});
-        &:hover {
+        &:not(:disabled):hover {
           color: $color-hover;
         }
       }
@@ -129,10 +129,10 @@ html:not([data-theme-mode='dark']) {
     &.outline,
     &.ghost {
       box-shadow: none;
-      &:hover {
+      &:not(:disabled):hover {
         background-color: rgba(0, 0, 0, 0.02);
       }
-      &:active {
+      &:not(:disabled):active {
         background-color: rgba(0, 0, 0, 0.04);
       }
     }
@@ -142,5 +142,28 @@ html:not([data-theme-mode='dark']) {
 html[data-theme-mode='dark'] {
   .main {
     @include bindColor(400, 300);
+  }
+}
+
+.main:disabled {
+  cursor: default;
+  box-shadow: none;
+
+  $text: var(--button-disabled);
+  $bg: var(--button-disabled-background);
+
+  &.solid {
+    border: 0px;
+    color: $text;
+    background-color: $bg;
+  }
+
+  &.outline {
+    color: $text;
+    border-color: $text;
+  }
+
+  &.ghost {
+    color: $text;
   }
 }
