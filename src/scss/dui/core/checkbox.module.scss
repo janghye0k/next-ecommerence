@@ -1,0 +1,117 @@
+@use '@/scss/helpers/mixin';
+$colors: (
+  'gray',
+  'red',
+  'pink',
+  'yellow',
+  'orange',
+  'purple',
+  'deepPurple',
+  'indigo',
+  'blue',
+  'lightblue',
+  'cyan',
+  'teal',
+  'green',
+  'lightgreen',
+  'lime',
+  'brown',
+  'theme'
+);
+$sizes: ('xs', 'sm', 'md', 'lg', 'xl');
+$l: var(--text-hsl-l);
+
+@mixin bindSize {
+  $num: -1;
+  @each $size in $sizes {
+    $num: $num + 1;
+    .root:has(.input.#{$size}) {
+      $rem125: 0.125rem * $num;
+      $s: 0.75rem + $rem125;
+
+      font-size: $s;
+
+      & .checkbox {
+        margin: auto $s / 4;
+        width: $s;
+        height: $s;
+        border-width: clamp(1px, 1.5px * $num, 2px);
+      }
+    }
+  }
+}
+
+@include bindSize;
+
+.root {
+  display: inline-block;
+
+  .label {
+    display: inline-flex;
+  }
+  &:has(.input:required) .label::after {
+    content: '*';
+    color: var(--input-error-color);
+  }
+
+  .checkbox {
+    display: inline-flex;
+    border-radius: 3px;
+    border-style: solid;
+    border-color: var(--text-disabled);
+    border-width: 2px;
+
+    & > * {
+      width: 100%;
+      height: 100%;
+      color: var(--background-default);
+      transition: ease all 0.3s;
+    }
+  }
+
+  .input {
+    @include mixin.blind;
+
+    &:not(:checked) + .checkbox > * {
+      opacity: 0;
+    }
+
+    &:checked + .checkbox {
+      background-color: var(--input-border-color);
+      border-color: var(--input-border-color);
+    }
+  }
+}
+
+@each $color in $colors {
+  $light: var(--#{$color}-600);
+  $dark: var(--#{$color}-300);
+
+  @if ($color == 'theme') {
+    $light: #121212;
+    $dark: #fff;
+  }
+
+  .input.#{$color}:checked + .checkbox {
+    background-color: $light;
+    border-color: $light;
+  }
+
+  html[data-theme='dark'] {
+    & .input.#{$color}:checked + .checkbox {
+      background-color: $dark;
+      border-color: $dark;
+    }
+  }
+}
+
+.root:has(.input:disabled) {
+  & .checkbox {
+    border-color: var(--button-disabled);
+    background-color: var(--button-disabled-background);
+  }
+
+  & :is(.label, .checkbox > *) {
+    color: var(--text-disabled);
+  }
+}

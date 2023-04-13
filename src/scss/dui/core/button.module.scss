@@ -124,7 +124,7 @@ $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
   }
 }
 
-html:not([data-theme-mode='dark']) {
+html:not([data-theme='dark']) {
   .main {
     &.outline,
     &.ghost {
@@ -139,7 +139,7 @@ html:not([data-theme-mode='dark']) {
   }
 }
 
-html[data-theme-mode='dark'] {
+html[data-theme='dark'] {
   .main {
     @include bindColor(400, 300);
   }

@@ -192,6 +192,12 @@
   --media-sm: 30rem; // 480px
   --media-xs: 20rem; // 320px
 
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-md: 1rem;
+  --font-lg: 1.125rem;
+  --font-xl: 1.25rem;
+
   --logo-font: 'Keania One', cursive;
   --main-font: 'NotoSansKR', sans-serif;
 
@@ -208,7 +214,7 @@
   --error-main: #d32f2f;
 }
 
-html:not([data-theme-mode='dark']) {
+html:not([data-theme='dark']) {
   // Theme
   --text-hsl-l: 0%;
   --bg-hsl-l: 100%;
@@ -241,7 +247,7 @@ html:not([data-theme-mode='dark']) {
   --input-valid-color: var(--success-main);
 }
 
-html[data-theme-mode='dark'] {
+html[data-theme='dark'] {
   // Theme
   --text-hsl-l: 100%;
   --bg-hsl-l: 0%;
