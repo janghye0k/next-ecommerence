@@ -48,6 +48,14 @@ declare namespace Dui {
     >,
     'ref'
   >
+
+  type DefaultSelectProps = Omit<
+    React.DetailedHTMLProps<
+      React.SelectHTMLAttributes<HTMLSelectElement>,
+      HTMLSelectElement
+    >,
+    'ref'
+  >
 }
 
 export = Dui

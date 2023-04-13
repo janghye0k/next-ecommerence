@@ -1,15 +1,6 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, {
-  createContext,
-  forwardRef,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import React, { forwardRef, useCallback, useMemo } from 'react'
 import classNames from 'classnames/bind'
 import styles from '@/scss/dui/core/input.module.scss'
 import Dui from '@/dui/types'
@@ -37,28 +28,14 @@ interface CoreInput
   Error: typeof Error
 }
 
-interface ContextState {
-  error?: boolean
-  setError: React.Dispatch<React.SetStateAction<boolean | undefined>>
-}
-
-const InputContext = createContext<ContextState>({} as ContextState)
-
 function BaseWrapper(
   { children, className, ...props }: Dui.DefaultDivProps,
   ref?: Dui.CoreRef<HTMLDivElement>,
 ) {
-  const [error, setError] = useState<boolean | undefined>(undefined)
   return (
-    <InputContext.Provider value={{ error, setError }}>
-      <div
-        className={`${cx('wrapper', { error })} ${className ?? ''}`}
-        ref={ref}
-        {...props}
-      >
-        {children}
-      </div>
-    </InputContext.Provider>
+    <div className={`${cx('wrapper')} ${className ?? ''}`} ref={ref} {...props}>
+      {children}
+    </div>
   )
 }
 
@@ -127,12 +104,6 @@ function BaseInput(
   }: InputProps,
   ref?: Dui.CoreRef<HTMLInputElement>,
 ) {
-  const { setError } = useContext(InputContext)
-
-  useEffect(() => {
-    if (!!setError) setError(error)
-  }, [error, setError])
-
   const hasIcon = useMemo(
     () => !!leftIcon || !!rightIcon,
     [leftIcon, rightIcon],
