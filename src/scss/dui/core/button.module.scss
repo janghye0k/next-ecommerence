@@ -21,14 +21,21 @@ $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
 @mixin bindSize() {
   $num: 0;
   @each $size in $sizes {
+    $h: 1.5rem + 0.5rem * $num;
+
     &.#{$size} {
-      gap: calc(0.3rem + 0.1rem * $num);
-      padding: 0 calc(8px + 0.25rem * $num);
-      height: calc(1.5rem + 0.5rem * $num);
-      font-size: calc(0.75rem + 0.125rem * $num);
+      gap: 0.3rem + 0.1rem * $num;
+      padding: 0 0.5rem + 0.25rem * $num;
+      height: $h;
+      font-size: 0.75rem + 0.125rem * $num;
+
+      &.icon {
+        width: $h;
+        padding: 0;
+      }
 
       & .iconbox {
-        $s: calc(1rem + 0.125rem * $num);
+        $s: 1rem + 0.125rem * $num;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -84,7 +91,6 @@ $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
 }
 
 .main {
-  margin: 0.3rem;
   position: relative;
   display: inline-flex;
   align-items: center;

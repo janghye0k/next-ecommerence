@@ -6,7 +6,7 @@ import Dui from '@/dui/types'
 
 const cx = classNames.bind(styles)
 
-interface ButtonProps extends Dui.DefaultButtonProps {
+export interface ButtonProps extends Dui.DefaultButtonProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   color?: ThemeColor
   variant?: 'solid' | 'ghost' | 'outline'
@@ -45,7 +45,44 @@ function BaseButton(
   )
 }
 
+export interface IconButtonProps
+  extends Omit<ButtonProps, 'leftIcon' | 'rightIcon' | 'children'> {
+  icon?: React.ReactNode
+  'aria-label': string
+}
+
+function BaseIconButton(
+  {
+    className,
+    size = 'md',
+    variant = 'solid',
+    color,
+    icon,
+    ...props
+  }: IconButtonProps,
+  ref?: Dui.CoreRef<HTMLButtonElement>,
+) {
+  return (
+    <button
+      className={`${cx('main', 'icon', size, variant, {
+        [color as string]: !!color,
+      })} ${className || ''}`}
+      {...props}
+      ref={ref}
+      data-shadow="dp02"
+      data-shadow-in="dp04"
+      data-shadow-on="dp08"
+    >
+      {icon}
+    </button>
+  )
+}
+
 const Button = forwardRef(BaseButton)
 Button.displayName = 'Button'
 
+const IconButton = forwardRef(BaseIconButton)
+IconButton.displayName = 'IconButton'
+
+export { IconButton }
 export default Button

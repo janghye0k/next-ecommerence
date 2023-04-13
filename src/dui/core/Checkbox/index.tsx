@@ -8,7 +8,7 @@ const cx = cn.bind(scss)
 
 type CheckboxComponentKeys = 'root' | 'label' | 'checkbox'
 
-interface CheckboxProps
+export interface CheckboxProps
   extends Omit<Dui.DefaultInputProps, 'type' | 'style' | 'size'> {
   labelPosition?: 'left' | 'right'
   classNames?: { [key in CheckboxComponentKeys]?: string }
