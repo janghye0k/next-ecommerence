@@ -18,9 +18,29 @@ export interface InputProps extends Omit<Dui.DefaultInputProps, 'size'> {
   disableError?: boolean
 }
 
+export interface TextareaProps extends Dui.DefaultTextareaProps {
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  variant?: 'outline' | 'filled' | 'underline'
+  leftIcon?: React.ReactNode
+  rightIcon?: React.ReactNode
+  error?: boolean
+  disableValid?: boolean
+  disableError?: boolean
+}
+
 interface CoreInput
   extends React.ForwardRefExoticComponent<
     InputProps & React.RefAttributes<HTMLInputElement>
+  > {
+  Wrapper: typeof Wrapper
+  Label: typeof Label
+  Description: typeof Description
+  Error: typeof Error
+}
+
+interface CoreTextarea
+  extends React.ForwardRefExoticComponent<
+    TextareaProps & React.RefAttributes<HTMLTextAreaElement>
   > {
   Wrapper: typeof Wrapper
   Label: typeof Label
@@ -160,4 +180,74 @@ Input.Label = Label
 Input.Description = Description
 Input.Error = Error
 
+function BaseTextarea(
+  {
+    className,
+    size = 'md',
+    placeholder = ' ',
+    variant = 'outline',
+    leftIcon,
+    rightIcon,
+    error,
+    disableValid,
+    disableError,
+    ...props
+  }: TextareaProps,
+  ref?: Dui.CoreRef<HTMLTextAreaElement>,
+) {
+  const hasIcon = useMemo(
+    () => !!leftIcon || !!rightIcon,
+    [leftIcon, rightIcon],
+  )
+
+  const onClickInput = useCallback((event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    const $input = event.currentTarget.querySelector('input')
+
+    if ($input && document.activeElement !== $input) $input.focus()
+  }, [])
+
+  return !hasIcon ? (
+    <textarea
+      {...props}
+      ref={ref}
+      className={`${cx('input', variant, size, {
+        'invalid-none': disableError,
+        error,
+        valid: !disableValid,
+      })} ${className ?? ''}`}
+      placeholder={placeholder}
+    />
+  ) : (
+    <div className={cx('container')} onClick={onClickInput}>
+      {!leftIcon ? null : (
+        <span className={cx('iconbox', 'iconbox-left')}>{leftIcon}</span>
+      )}
+      <textarea
+        {...props}
+        className={`${cx('input', variant, size, {
+          'invalid-none': disableError,
+          error,
+          valid: !disableValid,
+          icl: !!leftIcon,
+          icr: !!rightIcon,
+        })} ${className ?? ''}`}
+        placeholder={placeholder}
+      />
+      {!rightIcon ? null : (
+        <span className={cx('iconbox', 'iconbox-right')}>{rightIcon}</span>
+      )}
+    </div>
+  )
+}
+
+const Textarea = forwardRef(BaseTextarea) as CoreTextarea
+Textarea.displayName = 'Textarea'
+Textarea.Wrapper = Wrapper
+Textarea.Label = Label
+Textarea.Description = Description
+Textarea.Error = Error
+
+export { Textarea }
 export default Input

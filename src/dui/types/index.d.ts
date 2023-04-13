@@ -56,6 +56,14 @@ declare namespace Dui {
     >,
     'ref'
   >
+
+  type DefaultTextareaProps = Omit<
+    React.DetailedHTMLProps<
+      React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+      HTMLTextAreaElement
+    >,
+    'ref'
+  >
 }
 
 export = Dui
