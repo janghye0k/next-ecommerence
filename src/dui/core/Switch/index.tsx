@@ -1,24 +1,22 @@
 import React, { forwardRef } from 'react'
 import Dui from '@/dui/types'
 import cn from 'classnames/bind'
-import scss from '@/scss/dui/core/checkbox.module.scss'
-import { FaCheck } from 'react-icons/fa'
+import scss from '@/scss/dui/core/switch.module.scss'
 
 const cx = cn.bind(scss)
 
-type CheckboxComponentKeys = 'root' | 'label' | 'checkbox'
+type SwitchComponentKeys = 'root' | 'label' | 'switch'
 
-export interface CheckboxProps
+export interface SwitchProps
   extends Omit<Dui.DefaultInputProps, 'type' | 'style' | 'size'> {
   labelPosition?: 'left' | 'right'
-  classNames?: { [key in CheckboxComponentKeys]?: string }
-  styles?: { [key in CheckboxComponentKeys]?: React.CSSProperties }
+  classNames?: { [key in SwitchComponentKeys]?: string }
+  styles?: { [key in SwitchComponentKeys]?: React.CSSProperties }
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   color?: ThemeColor | 'theme'
-  icon?: React.ReactNode
 }
 
-function BaseCheckbox(
+function BaseSwitch(
   {
     className,
     classNames,
@@ -27,9 +25,8 @@ function BaseCheckbox(
     styles,
     size = 'sm',
     color,
-    icon,
     ...props
-  }: CheckboxProps,
+  }: SwitchProps,
   ref?: Dui.CoreRef<HTMLInputElement>,
 ) {
   const isLeft = labelPosition === 'left'
@@ -51,12 +48,12 @@ function BaseCheckbox(
           {...props}
         />
         <span
-          className={`${cx('checkbox')} ${classNames?.checkbox ?? ''}`}
+          className={`${cx('switch')} ${classNames?.switch ?? ''}`}
           role="checkbox"
           aria-checked={props.checked}
-          style={styles?.checkbox}
+          style={styles?.switch}
         >
-          {icon ?? <FaCheck />}
+          <span className={cx('circle')}></span>
         </span>
         {!isLeft ? children : null}
       </label>
@@ -64,7 +61,7 @@ function BaseCheckbox(
   )
 }
 
-const Checkbox = forwardRef(BaseCheckbox)
-Checkbox.displayName = 'Checkbox'
+const Switch = forwardRef(BaseSwitch)
+Switch.displayName = 'Switch'
 
-export default Checkbox
+export default Switch

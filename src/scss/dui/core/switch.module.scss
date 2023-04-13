@@ -1,0 +1,125 @@
+@use '@/scss/helpers/mixin';
+$colors: (
+  'gray',
+  'red',
+  'pink',
+  'yellow',
+  'orange',
+  'purple',
+  'deepPurple',
+  'indigo',
+  'blue',
+  'lightblue',
+  'cyan',
+  'teal',
+  'green',
+  'lightgreen',
+  'lime',
+  'brown',
+  'theme'
+);
+$sizes: ('sm', 'md', 'lg');
+$l: var(--text-hsl-l);
+
+@mixin bindSize {
+  $num: -1;
+  @each $size in $sizes {
+    $num: $num + 1;
+    .root:has(.input.#{$size}) {
+      $rem125: 0.125rem * $num;
+      $rem25: 0.25rem * $num;
+      $s: 1rem + $rem25;
+
+      font-size: 0.875rem + $rem125;
+
+      & .switch {
+        margin: auto $s / 4;
+        width: $s * 2;
+        height: $s;
+        border-width: clamp(1px, 1.5px * $num, 2px);
+        padding: calc(0.25rem - clamp(1px, 1.5px * $num, 2px));
+        color: var(--background-default);
+
+        & .circle {
+          width: $s - 0.5rem;
+          height: $s - 0.5rem;
+        }
+      }
+
+      & .input:checked + .switch .circle {
+        margin-left: calc(100% - $s + 0.5rem);
+      }
+    }
+  }
+}
+
+@include bindSize;
+
+.root {
+  display: inline-block;
+
+  .label {
+    display: inline-flex;
+    align-items: center;
+  }
+  &:has(.input:required) .label::after {
+    content: '*';
+    color: var(--input-error-color);
+  }
+
+  .switch {
+    display: inline-flex;
+    width: 100%;
+    border-radius: 9999px;
+    border-style: solid;
+    border-width: 2px;
+    background-color: var(--input-border-color);
+    border-color: var(--input-border-color);
+  }
+
+  .circle {
+    border-radius: inherit;
+    background-color: var(--background-default);
+  }
+
+  :is(.switch, .circle) {
+    transition: ease all 0.2s;
+  }
+
+  .input {
+    @include mixin.blind;
+  }
+}
+
+@each $color in $colors {
+  $light: var(--#{$color}-600);
+  $dark: var(--#{$color}-300);
+
+  @if ($color == 'theme') {
+    $light: #121212;
+    $dark: #fff;
+  }
+
+  .input.#{$color} + .switch {
+    background-color: $light;
+    border-color: $light;
+  }
+
+  html[data-theme='dark'] {
+    & .input.#{$color} + .switch {
+      background-color: $dark;
+      border-color: $dark;
+    }
+  }
+}
+
+.root:has(.input:disabled) {
+  & .switch {
+    background-color: var(--button-disabled-background);
+    border-color: var(--button-disabled-background);
+  }
+
+  & :is(.label, .switch > *) {
+    color: var(--text-disabled);
+  }
+}

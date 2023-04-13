@@ -36,6 +36,7 @@ function BaseRadio(
       style={styles?.root}
     >
       <label
+        htmlFor={props.id}
         className={`${cx('label')} ${classNames?.label ?? ''}`}
         style={styles?.label}
       >
