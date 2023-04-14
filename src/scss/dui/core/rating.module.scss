@@ -1,0 +1,122 @@
+@use '@/scss/helpers/mixin';
+$colors: (
+  'gray',
+  'red',
+  'pink',
+  'yellow',
+  'orange',
+  'purple',
+  'deepPurple',
+  'indigo',
+  'blue',
+  'lightblue',
+  'cyan',
+  'teal',
+  'green',
+  'lightgreen',
+  'lime',
+  'brown',
+  'theme'
+);
+$sizes: ('xs', 'sm', 'md', 'lg', 'xl');
+
+@mixin bindSize {
+  $num: -1;
+  @each $size in $sizes {
+    $num: $num + 1;
+
+    $fs: 1rem + 0.125rem * $num;
+    .body.#{$size} {
+      font-size: $fs;
+
+      .half {
+        width: $fs;
+        height: $fs;
+      }
+    }
+  }
+}
+
+@include bindSize;
+
+.root {
+  display: inline-block;
+}
+
+.body {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+
+  .radio {
+    @include mixin.blind;
+  }
+
+  .star {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      transform: scale(1.15);
+    }
+  }
+
+  .icon {
+    display: inline-flex;
+    font-size: inherit;
+    transition: ease all 0.1s;
+    cursor: pointer;
+
+    & svg {
+      fill: var(--button-disabled-background);
+    }
+
+    .half {
+      fill: rgba(0, 0, 0, 0);
+    }
+
+    &:has(.half) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 50%;
+      overflow: hidden;
+
+      & span {
+        display: inline-flex;
+        pointer-events: none;
+      }
+    }
+  }
+
+  &.select-only:hover .on svg {
+    fill: var(--button-disabled-background);
+  }
+}
+
+@each $color in $colors {
+  $light: var(--#{$color}-700);
+  $dark: var(--#{$color}-400);
+
+  @if ($color == 'theme') {
+    $light: #121212;
+    $dark: #fff;
+  }
+
+  .body .icon.#{$color} {
+    &.on svg,
+    &:hover svg {
+      fill: $light;
+    }
+  }
+
+  html[data-theme='dark'] .body .icon.#{$color} {
+    &.on svg,
+    &:hover svg {
+      fill: $dark;
+    }
+  }
+}
