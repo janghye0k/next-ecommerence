@@ -44,6 +44,7 @@ function Base(
         className={cx('body', size, classNames.body ?? '', {
           [color as string]: !!color,
         })}
+        aria-label="breadcrumbs"
       >
         {(Array.isArray(children) ? children : [children]).map(
           (item, index) => {
@@ -54,6 +55,7 @@ function Base(
                 <span
                   className={cx('separator', classNames.separator ?? '')}
                   style={space ? { padding: `0 ${space}` } : undefined}
+                  role="presentation"
                 >
                   {separator}
                 </span>

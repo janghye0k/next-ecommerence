@@ -57,7 +57,6 @@ $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
 
     &.#{$colorName} {
       &.solid {
-        border: 0px;
         color: var(--background-default);
         background-color: $color;
 
@@ -78,7 +77,6 @@ $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
       }
 
       &.ghost {
-        border: 0px;
         color: $color;
 
         $color-hover: var(--#{$colorName}-#{$hover-num});

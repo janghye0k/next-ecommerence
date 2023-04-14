@@ -1,0 +1,81 @@
+// box shadow
+@mixin dp01 {
+  background-color: hsla(0, 100%, 100%, 0.05);
+  box-shadow:
+		/* offset-x | offset-y | blur-radius | spread-radius | color */ 0px
+      1px 1px 0px hsla(0, 0%, 0%, var(--shadow-umbra-opacity)),
+    0px 2px 1px -1px hsla(0, 0%, 0%, var(--shadow-penumbra-opacity)),
+    0px 1px 3px 0px hsla(0, 0%, 0%, var(--shadow-ambient-opacity));
+}
+
+@mixin dp02 {
+  background-color: hsla(0, 100%, 100%, 0.07);
+  box-shadow:
+	/* offset-x | offset-y | blur-radius | spread-radius | color */ 0px
+      2px 2px 0px hsla(0, 0%, 0%, var(--shadow-umbra-opacity)),
+    0px 3px 1px -2px hsla(0, 0%, 0%, var(--shadow-penumbra-opacity)),
+    0px 1px 5px 0px hsla(0, 0%, 0%, var(--shadow-ambient-opacity));
+}
+
+@mixin dp03 {
+  background-color: hsla(0, 100%, 100%, 0.08);
+  box-shadow:
+		/* offset-x | offset-y | blur-radius | spread-radius | color */ 0px
+      3px 4px 0px hsla(0, 0%, 0%, var(--shadow-umbra-opacity)),
+    0px 3px 3px -2px hsla(0, 0%, 0%, var(--shadow-penumbra-opacity)),
+    0px 1px 8px 0px hsla(0, 0%, 0%, var(--shadow-ambient-opacity));
+}
+
+@mixin dp04 {
+  background-color: hsla(0, 100%, 100%, 0.09);
+  box-shadow:
+		/* offset-x | offset-y | blur-radius | spread-radius | color */ 0px
+      4px 5px 0px hsla(0, 0%, 0%, var(--shadow-umbra-opacity)),
+    0px 1px 10px 0px hsla(0, 0%, 0%, var(--shadow-penumbra-opacity)),
+    0px 2px 4px -1px hsla(0, 0%, 0%, var(--shadow-ambient-opacity));
+}
+
+@mixin dp06 {
+  background-color: hsla(0, 100%, 100%, 0.11);
+  box-shadow:
+		/* offset-x | offset-y | blur-radius | spread-radius | color */ 0px
+      6px 10px 0px hsla(0, 0%, 0%, var(--shadow-umbra-opacity)),
+    0px 1px 18px 0px hsla(0, 0%, 0%, var(--shadow-penumbra-opacity)),
+    0px 3px 5px -1px hsla(0, 0%, 0%, var(--shadow-ambient-opacity));
+}
+
+@mixin dp08 {
+  background-color: hsla(0, 100%, 100%, var(--shadow-penumbra-opacity));
+  box-shadow:
+		/* offset-x | offset-y | blur-radius | spread-radius | color */ 0px
+      8px 10px 1px hsla(0, 0%, 0%, var(--shadow-umbra-opacity)),
+    0px 3px 14px 2px hsla(0, 0%, 0%, var(--shadow-penumbra-opacity)),
+    0px 5px 5px -3px hsla(0, 0%, 0%, var(--shadow-ambient-opacity));
+}
+
+@mixin dp12 {
+  background-color: hsla(0, 100%, 100%, var(--shadow-umbra-opacity));
+  box-shadow:
+		/* offset-x | offset-y | blur-radius | spread-radius | color */ 0px
+      12px 17px 2px hsla(0, 0%, 0%, var(--shadow-umbra-opacity)),
+    0px 5px 22px 4px hsla(0, 0%, 0%, var(--shadow-penumbra-opacity)),
+    0px 7px 8px -4px hsla(0, 0%, 0%, var(--shadow-ambient-opacity));
+}
+
+@mixin dp16 {
+  background-color: hsla(0, 100%, 100%, 0.15);
+  box-shadow:
+		/* offset-x | offset-y | blur-radius | spread-radius | color */ 0px
+      16px 24px 2px hsla(0, 0%, 0%, var(--shadow-umbra-opacity)),
+    0px 6px 30px 5px hsla(0, 0%, 0%, var(--shadow-penumbra-opacity)),
+    0px 8px 10px -5px hsla(0, 0%, 0%, var(--shadow-ambient-opacity));
+}
+
+@mixin dp24 {
+  background-color: hsla(0, 100%, 100%, 0.16);
+  box-shadow:
+		/* offset-x | offset-y | blur-radius | spread-radius | color */ 0px
+      24px 38px 3px hsla(0, 0%, 0%, var(--shadow-umbra-opacity)),
+    0px 9px 46px 8px hsla(0, 0%, 0%, var(--shadow-penumbra-opacity)),
+    0px 11px 15px -7px hsla(0, 0%, 0%, var(--shadow-ambient-opacity));
+}

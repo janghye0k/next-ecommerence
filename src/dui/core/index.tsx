@@ -1,5 +1,6 @@
 import Breadcrumbs from './Breadcrumbs'
 import Button, { IconButton } from './Button'
+import Burger from './Button/Burger'
 import Checkbox from './Checkbox'
 import Input, { Textarea } from './Input'
 import Radio from './Radio'
@@ -18,4 +19,5 @@ export {
   Textarea,
   Rating,
   Breadcrumbs,
+  Burger,
 }
