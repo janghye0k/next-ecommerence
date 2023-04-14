@@ -1,3 +1,4 @@
+import Breadcrumbs from './Breadcrumbs'
 import Button, { IconButton } from './Button'
 import Checkbox from './Checkbox'
 import Input, { Textarea } from './Input'
@@ -16,4 +17,5 @@ export {
   Switch,
   Textarea,
   Rating,
+  Breadcrumbs,
 }

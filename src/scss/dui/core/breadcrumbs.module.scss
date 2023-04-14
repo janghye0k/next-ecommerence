@@ -1,0 +1,73 @@
+@use '@/scss/helpers/mixin';
+$colors: (
+  'gray',
+  'red',
+  'pink',
+  'yellow',
+  'orange',
+  'purple',
+  'deepPurple',
+  'indigo',
+  'blue',
+  'lightblue',
+  'cyan',
+  'teal',
+  'green',
+  'lightgreen',
+  'lime',
+  'brown'
+);
+$sizes: ('xs', 'sm', 'md', 'lg', 'xl');
+
+@mixin bindSize {
+  $num: -1;
+  @each $size in $sizes {
+    $num: $num + 1;
+
+    $rem125: 0.125rem * $num;
+
+    $fs: 0.75rem + $rem125;
+
+    .body.#{$size} {
+      font-size: $fs;
+
+      .separator {
+        font-size: 0.625rem + $rem125;
+        padding: 0 0.25rem + $rem125;
+        display: inline-flex;
+        align-items: center;
+      }
+    }
+  }
+}
+
+@include bindSize;
+
+@each $color in $colors {
+  $light: var(--#{$color}-600);
+  $dark: var(--#{$color}-300);
+
+  .body.#{$color} {
+    color: $light;
+  }
+
+  html[data-theme='dark'] {
+    & .body.#{$color} {
+      color: $dark;
+    }
+  }
+}
+
+.body {
+  position: relative;
+  margin: unset;
+  padding: unset;
+  list-style: none;
+
+  display: inline-flex;
+  align-items: center;
+}
+
+.body > :last-child {
+  @include mixin.blind;
+}
