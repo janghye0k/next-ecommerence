@@ -1,4 +1,4 @@
-import { Burger } from '@/dui/core'
+import { Divider } from '@/dui/core'
 import Head from 'next/head'
 import { useState } from 'react'
 
@@ -14,17 +14,12 @@ export default function Home() {
         <title>Home | PIIC</title>
       </Head>
       <main>Welcome</main>
-      <Burger open={open} color="red" onClick={toggle} size="xs" />
-      <Burger open={open} color="blue" onClick={toggle} size="sm" />
-      <Burger open={open} onClick={toggle} />
-      <Burger open={open} onClick={toggle} size="lg" />
-      <Burger
-        open={open}
-        variant="solid"
-        color="teal"
-        onClick={toggle}
-        size="xl"
-      />
+      <Divider />
+      <Divider size={30} />
+      <Divider variant="dashed">hello</Divider>
+      <div style={{ height: '40px' }}>
+        <Divider orientation="vertical">test</Divider>
+      </div>
     </>
   )
 }
