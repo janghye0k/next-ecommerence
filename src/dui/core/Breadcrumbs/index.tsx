@@ -8,7 +8,7 @@ const cx = cn.bind(scss)
 type ComponentName = 'root' | 'body' | 'item' | 'separator'
 
 export interface BreadcrumbsProps extends Dui.DefaultDivProps {
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  size?: Dui.Size
   color?: ThemeColor
   separator?: React.ReactNode
   spacing?: number | string

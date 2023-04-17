@@ -13,8 +13,8 @@ export interface CheckboxProps
   labelPosition?: 'left' | 'right'
   classNames?: { [key in CheckboxComponentKeys]?: string }
   styles?: { [key in CheckboxComponentKeys]?: React.CSSProperties }
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  color?: ThemeColor | 'theme'
+  size?: Dui.Size
+  color?: ThemeColor
   icon?: React.ReactNode
 }
 

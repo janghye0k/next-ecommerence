@@ -1,23 +1,6 @@
 @use '@/scss/helpers/mixin';
-$colors: (
-  'gray',
-  'red',
-  'pink',
-  'yellow',
-  'orange',
-  'purple',
-  'deepPurple',
-  'indigo',
-  'blue',
-  'lightblue',
-  'cyan',
-  'teal',
-  'green',
-  'lightgreen',
-  'lime',
-  'brown',
-  'theme'
-);
+@use '@/scss/helpers/color';
+
 $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
 
 @mixin bindSize {
@@ -97,14 +80,9 @@ $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
   }
 }
 
-@each $color in $colors {
+@each $color in color.$colors {
   $light: var(--#{$color}-700);
   $dark: var(--#{$color}-400);
-
-  @if ($color == 'theme') {
-    $light: #121212;
-    $dark: #fff;
-  }
 
   .body .icon.#{$color} {
     &.on svg,

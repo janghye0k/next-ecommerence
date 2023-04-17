@@ -8,7 +8,7 @@ const cx = cn.bind(scss)
 interface BurgerProps extends Dui.DefaultButtonProps {
   open?: boolean
   variant?: 'solid' | 'ghost'
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  size?: Dui.Size
   color?: ThemeColor
 }
 

@@ -1,23 +1,6 @@
 @use '@/scss/helpers/mixin';
-$colors: (
-  'gray',
-  'red',
-  'pink',
-  'yellow',
-  'orange',
-  'purple',
-  'deepPurple',
-  'indigo',
-  'blue',
-  'lightblue',
-  'cyan',
-  'teal',
-  'green',
-  'lightgreen',
-  'lime',
-  'brown',
-  'theme'
-);
+@use '@/scss/helpers/color';
+
 $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
 $l: var(--text-hsl-l);
 
@@ -83,14 +66,9 @@ $l: var(--text-hsl-l);
   }
 }
 
-@each $color in $colors {
+@each $color in color.$colors {
   $light: var(--#{$color}-600);
   $dark: var(--#{$color}-300);
-
-  @if ($color == 'theme') {
-    $light: #121212;
-    $dark: #fff;
-  }
 
   .input.#{$color}:checked + .checkbox {
     background-color: $light;

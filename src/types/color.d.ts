@@ -15,3 +15,4 @@ type ThemeColor =
   | 'lightgreen'
   | 'lime'
   | 'brown'
+  | 'black'

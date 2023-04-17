@@ -7,7 +7,7 @@ import { FaChevronDown } from 'react-icons/fa'
 export interface SelectProps extends Omit<Dui.DefaultSelectProps, 'size'> {
   color?: ThemeColor
   variant?: 'outline' | 'filled' | 'underline'
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  size?: Dui.Size
   icon?: React.ReactNode
   displaySize?: number
   error?: boolean

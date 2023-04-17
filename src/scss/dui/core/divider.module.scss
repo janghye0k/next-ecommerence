@@ -1,22 +1,4 @@
-$colors: (
-  'gray',
-  'red',
-  'pink',
-  'yellow',
-  'orange',
-  'purple',
-  'deepPurple',
-  'indigo',
-  'blue',
-  'lightblue',
-  'cyan',
-  'teal',
-  'green',
-  'lightgreen',
-  'lime',
-  'brown',
-  'theme'
-);
+@use '@/scss/helpers/color';
 $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
 
 $num: -1;
@@ -62,8 +44,12 @@ $num: -1;
 }
 
 .root {
-  border-style: solid;
-  border-color: var(--divider);
+  &,
+  & .text::before,
+  & .text::after {
+    border-style: solid;
+    border-color: var(--divider);
+  }
 
   &:not(.vertical) {
     margin: 0.5rem 0;
@@ -76,12 +62,6 @@ $num: -1;
     justify-content: center;
     height: 100%;
     align-self: stretch;
-  }
-
-  & .text::before,
-  & .text::after {
-    border-style: inherit;
-    border-color: inherit;
   }
 }
 
@@ -108,14 +88,9 @@ $num: -1;
   }
 }
 
-@each $color in $colors {
+@each $color in color.$colors {
   $light: var(--#{$color}-600);
   $dark: var(--#{$color}-300);
-
-  @if ($color == 'theme') {
-    $light: #121212;
-    $dark: #fff;
-  }
 
   .root.#{$color} .text {
     color: $light;
@@ -128,7 +103,7 @@ $num: -1;
 
 @each $variant in (solid, dashed, dotted) {
   .root.#{$variant} {
-    border-style: $variant;
+    &,
     & .text::before,
     & .text::after {
       border-style: $variant;

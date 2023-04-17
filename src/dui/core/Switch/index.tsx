@@ -12,8 +12,8 @@ export interface SwitchProps
   labelPosition?: 'left' | 'right'
   classNames?: { [key in SwitchComponentKeys]?: string }
   styles?: { [key in SwitchComponentKeys]?: React.CSSProperties }
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  color?: ThemeColor | 'theme'
+  size?: Dui.Size
+  color?: ThemeColor
 }
 
 function BaseSwitch(

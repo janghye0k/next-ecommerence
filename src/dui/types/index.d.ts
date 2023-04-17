@@ -3,6 +3,8 @@ import React from 'react'
 declare namespace Dui {
   export type CoreRef<T> = React.ForwardedRef<T>
 
+  type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+
   type InputTypeAttribute =
     | 'text'
     | 'email'

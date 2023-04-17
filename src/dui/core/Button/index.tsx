@@ -7,7 +7,7 @@ import Dui from '@/dui/types'
 const cx = classNames.bind(styles)
 
 export interface ButtonProps extends Dui.DefaultButtonProps {
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  size?: Dui.Size
   color?: ThemeColor
   variant?: 'solid' | 'ghost' | 'outline'
   leftIcon?: React.ReactNode

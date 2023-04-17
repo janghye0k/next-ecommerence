@@ -9,7 +9,7 @@ const cx = classNames.bind(styles)
 
 export interface InputProps extends Omit<Dui.DefaultInputProps, 'size'> {
   type?: Dui.InputTypeAttribute
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  size?: Dui.Size
   variant?: 'outline' | 'filled' | 'underline'
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
@@ -19,7 +19,7 @@ export interface InputProps extends Omit<Dui.DefaultInputProps, 'size'> {
 }
 
 export interface TextareaProps extends Dui.DefaultTextareaProps {
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  size?: Dui.Size
   variant?: 'outline' | 'filled' | 'underline'
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode

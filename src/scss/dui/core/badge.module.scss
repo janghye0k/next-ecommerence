@@ -1,0 +1,102 @@
+@use '@/scss/helpers/color.scss' as *;
+
+$sizes: ('xs', 'sm', 'md', 'lg', 'xl');
+
+$num: -1;
+$radius: 0.0625rem;
+@each $size in $sizes {
+  $num: $num + 1;
+  $multi: 0.125rem;
+
+  $s: 1rem + $multi * $num;
+  @if ($num > 2) {
+    $s: $s + 0.125rem * ($num - 2);
+  }
+  $fs: 0.5rem + 0.125rem * $num;
+  $radius: $radius * 2;
+
+  .root:has(.body[data-size='#{$size}']) {
+    height: $s;
+    font-size: $fs;
+    padding-inline: $fs * 0.75;
+    border-radius: $radius;
+
+    &:has(.body[data-variant='dot']) {
+      padding-inline-start: $fs / 2;
+
+      .dot {
+        width: 0.25rem + 0.125rem * $num;
+        height: 0.25rem + 0.125rem * $num;
+      }
+    }
+  }
+}
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:has(.body[data-variant='dot']) {
+    background-color: var(--background-default);
+    color: var(--text-primary);
+    border: 1px solid var(--button-disabled);
+    gap: 0.25rem;
+
+    .dot {
+      display: inline-block;
+      border-radius: 9999px;
+    }
+  }
+}
+
+@each $color in $colors {
+  $light: var(--#{$color}-500);
+  $dark: var(--#{$color}-300);
+
+  @if ($color == 'black') {
+    $light: var(--#{$color}-800);
+  }
+
+  .root:has(.body[data-color='#{$color}']) {
+    &:has(.body[data-variant='light']) {
+      background-color: var(--#{$color}-100);
+      color: $light;
+    }
+
+    &:has(.body[data-variant='filled']) {
+      background-color: $light;
+      color: var(--background-default);
+    }
+
+    &:has(.body[data-variant='outline']) {
+      background-color: var(--background-default);
+      color: $light;
+      border: 1px solid $light;
+    }
+
+    &:has(.body[data-variant='dot']) .dot {
+      background-color: $light;
+    }
+  }
+
+  html[data-theme='dark'] .root:has(.body[data-color='#{$color}']) {
+    &:has(.body[data-variant='light']) {
+      background-color: rgba(getColor($color, '500'), 0.2);
+      color: var(--#{$color}-100);
+    }
+
+    &:has(.body[data-variant='filled']) {
+      background-color: $dark;
+    }
+
+    &:has(.body[data-variant='outline']) {
+      color: $dark;
+      border-color: $dark;
+    }
+
+    &:has(.body[data-variant='dot']) .dot {
+      background-color: $dark;
+    }
+  }
+}

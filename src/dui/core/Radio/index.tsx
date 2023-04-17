@@ -12,8 +12,8 @@ export interface RadioProps
   labelPosition?: 'left' | 'right'
   classNames?: { [key in RadioComponentKeys]?: string }
   styles?: { [key in RadioComponentKeys]?: React.CSSProperties }
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  color?: ThemeColor | 'theme'
+  size?: Dui.Size
+  color?: ThemeColor
 }
 
 function BaseRadio(

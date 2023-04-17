@@ -1,13 +1,13 @@
 import Dui from '@/dui/types'
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef } from 'react'
 import cn from 'classnames/bind'
 import scss from '@/scss/dui/core/divider.module.scss'
 
 const cx = cn.bind(scss)
 
 export interface DividerProps extends Omit<Dui.DefaultDivProps, 'role'> {
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | number
-  textColor?: ThemeColor | 'theme'
+  size?: Dui.Size | number
+  textColor?: ThemeColor
   variant?: 'solid' | 'dashed' | 'dotted'
   orientation?: 'vertical' | 'horizontal'
 }
@@ -24,14 +24,11 @@ function BaseDivider(
   }: DividerProps,
   ref?: Dui.CoreRef<HTMLDivElement>,
 ) {
-  if (size < 1 || size > 30) {
+  if (typeof size === 'number' && (size < 1 || size > 30)) {
     throw new Error('Prop size must be in range(1, 30)')
   }
 
-  const s = useMemo(
-    () => (typeof size === 'number' ? `s${size}` : size),
-    [size],
-  )
+  const s = typeof size === 'number' ? `s${size}` : size
 
   return (
     <div

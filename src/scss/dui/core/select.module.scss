@@ -1,5 +1,4 @@
 $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
-$l: var(--text-hsl-l);
 $error-color: var(--input-error-color);
 
 @mixin bindSize {
@@ -99,7 +98,7 @@ $error-color: var(--input-error-color);
   background-color: inherit;
   border-width: 1px;
   border-style: solid;
-  border-color: hsla(0, 100%, $l, 0.14);
+  border-color: var(--button-disabled-background);
   transition: ease all 0.1s;
 
   &::placeholder {
@@ -116,14 +115,14 @@ $error-color: var(--input-error-color);
   }
 
   &.filled:not(:focus) {
-    background-color: hsla(0, 100%, $l, 0.08);
+    background-color: var(--button-selected);
     &:hover {
-      background-color: hsla(0, 100%, $l, 0.14);
+      background-color: var(--button-disabled-background);
     }
   }
 
   &:not(.filled, :focus, :disabled):hover {
-    border-color: hsla(0, 100%, $l, 0.24);
+    border-color: var(--button-disabled);
   }
   &:focus {
     $color: var(--input-border-color);

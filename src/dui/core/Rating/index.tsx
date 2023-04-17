@@ -18,15 +18,9 @@ export interface RatingProps extends Dui.DefaultDivProps {
   classNames?: { [key in RatingComponent]: string }
   defaultValue?: RatingScore
   value?: RatingScore
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  color?: ThemeColor | 'theme'
-  colors?: [
-    ThemeColor | 'theme',
-    ThemeColor | 'theme',
-    ThemeColor | 'theme',
-    ThemeColor | 'theme',
-    ThemeColor | 'theme',
-  ]
+  size?: Dui.Size
+  color?: ThemeColor
+  colors?: [ThemeColor, ThemeColor, ThemeColor, ThemeColor, ThemeColor]
   name?: string
   precision?: boolean
   selectedOnly?: boolean

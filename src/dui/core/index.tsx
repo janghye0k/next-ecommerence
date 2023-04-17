@@ -1,3 +1,4 @@
+import Badge from './Badge'
 import Breadcrumbs from './Breadcrumbs'
 import Button, { IconButton } from './Button'
 import Burger from './Button/Burger'
@@ -22,4 +23,5 @@ export {
   Breadcrumbs,
   Burger,
   Divider,
+  Badge,
 }
