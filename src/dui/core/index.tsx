@@ -10,6 +10,7 @@ import Radio from './Radio'
 import Rating from './Rating'
 import Select from './Select'
 import Switch from './Switch'
+import { Text, Title } from './Typography'
 
 export {
   Button,
@@ -26,4 +27,6 @@ export {
   Divider,
   Badge,
   Indicator,
+  Text,
+  Title,
 }
