@@ -1,0 +1,32 @@
+@use '@/scss/helpers/color';
+
+@each $color in color.$colors {
+  $light: var(--#{$color}-600);
+  $dark: var(--#{$color}-300);
+  .indicator.#{$color} {
+    background-color: $light;
+  }
+
+  html[data-theme='dark'] .indicator.#{$color} {
+    background-color: $dark;
+  }
+}
+
+.root {
+  position: relative;
+  display: inline-block;
+}
+
+.indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  color: var(--background-default);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.indicator.disabled {
+  display: none;
+}

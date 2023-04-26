@@ -4,6 +4,7 @@ import Button, { IconButton } from './Button'
 import Burger from './Button/Burger'
 import Checkbox from './Checkbox'
 import Divider from './Divider'
+import Indicator from './Indicator'
 import Input, { Textarea } from './Input'
 import Radio from './Radio'
 import Rating from './Rating'
@@ -24,4 +25,5 @@ export {
   Burger,
   Divider,
   Badge,
+  Indicator,
 }
