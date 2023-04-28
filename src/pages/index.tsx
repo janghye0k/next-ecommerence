@@ -1,6 +1,7 @@
 import { Switch } from '@/dui/core'
-import { Loader } from '@/dui/feedback'
+import { Notification } from '@/dui/feedback'
 import Head from 'next/head'
+import { FaWalking } from 'react-icons/fa'
 
 export default function Home() {
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -15,7 +16,10 @@ export default function Home() {
       </Head>
       <Switch onChange={onChange} />
       <main>Welcome</main>
-      <Loader />
+
+      <Notification title="Title" icon={<FaWalking />}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus, magni.
+      </Notification>
     </>
   )
 }

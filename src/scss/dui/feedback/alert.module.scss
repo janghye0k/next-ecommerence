@@ -52,6 +52,7 @@ $n: -1;
   .root.#{$size} {
     padding: 0.5rem + $rem25;
     font-size: $fs;
+    border-radius: 0.25rem;
 
     & .icon {
       font-size: 0.875rem + $rem125;
@@ -77,6 +78,12 @@ $n: -1;
   margin-left: auto;
   color: var(--gray-600);
   cursor: pointer;
+}
+.close:hover {
+  filter: brightness(99%);
+}
+.close:active {
+  transform: translateY(1px);
 }
 .container {
   flex: 1 1 0;

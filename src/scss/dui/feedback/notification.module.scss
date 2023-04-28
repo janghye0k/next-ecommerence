@@ -1,0 +1,112 @@
+@use '@/scss/helpers/color';
+
+@each $color in color.$colors {
+  $light: color.getColor($color, 600);
+  $dark: color.getColor($color, 300);
+  .#{$color} {
+    &::before {
+      background-color: $light;
+    }
+
+    & .icon {
+      color: $light;
+    }
+  }
+
+  html[data-theme='dark'] .#{$color} {
+    &::before {
+      background-color: $dark;
+    }
+
+    & .icon {
+      color: $dark;
+    }
+  }
+}
+
+$sizes: (
+  'sm': -1,
+  'md': 0,
+  'lg': 1,
+);
+
+@each $size, $n in $sizes {
+  .root.#{$size} {
+    $rem125: 0.125rem * $n;
+    $pad: 0.625rem + $rem125;
+    $w: 0.375rem + $rem125;
+
+    gap: 0.875rem + $rem125;
+    padding: $pad;
+    font-size: 0.875rem + $rem125;
+
+    &:not(:has(.icon)) {
+      padding-left: $pad + $w * 2;
+    }
+
+    &::before {
+      top: $pad - 0.125rem;
+      bottom: $pad - 0.125rem;
+      left: $w;
+      width: $w;
+      border-radius: $w / 2;
+    }
+  }
+}
+
+.root {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--background-default);
+  border-radius: 0.25rem;
+
+  &::before {
+    display: none;
+    content: '';
+    position: absolute;
+  }
+}
+
+.root:not(:has(.icon)) {
+  &::before {
+    display: block;
+  }
+}
+
+.icon {
+  line-height: 1;
+  font-size: 2em;
+}
+
+.body {
+  flex: 1 1 0;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.body:has(.title) .content {
+  color: var(--text-secondary);
+}
+
+.close {
+  font-size: inherit;
+  color: var(--gray-600);
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  padding: 0.25rem;
+  transition: ease all 0.1s;
+  cursor: pointer;
+}
+.close:hover {
+  filter: brightness(99%);
+}
+.close:active {
+  transform: translateY(1px);
+}
+
+html[data-theme='dark'] .close {
+  color: var(--text-primary);
+}

@@ -14,13 +14,7 @@ export interface AlertProps extends Omit<Dui.DefaultDivProps, 'title'> {
   classNames?: { [key in ComponentClassName]?: string }
   size?: 'sm' | 'md' | 'lg'
   variant?: 'light' | 'outline' | 'filled'
-  closeButtonProps?: Omit<
-    React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLSpanElement>,
-      HTMLSpanElement
-    >,
-    'ref'
-  >
+  closeButtonProps?: Dui.DefaultSpanProps
 }
 
 const cx = cn.bind(scss)
