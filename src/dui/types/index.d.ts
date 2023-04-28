@@ -66,6 +66,11 @@ declare namespace Dui {
     >,
     'ref'
   >
+
+  type DefaultSvgProps = Omit<
+    React.DetailedHTMLProps<React.SVGAttributes<SVGSVGElement>, SVGSVGElement>,
+    'ref'
+  >
 }
 
 export = Dui

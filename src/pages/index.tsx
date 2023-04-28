@@ -1,7 +1,6 @@
 import { Switch } from '@/dui/core'
-import { Alert } from '@/dui/feedback'
+import { Loader } from '@/dui/feedback'
 import Head from 'next/head'
-import { FaWater } from 'react-icons/fa'
 
 export default function Home() {
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -16,9 +15,7 @@ export default function Home() {
       </Head>
       <Switch onChange={onChange} />
       <main>Welcome</main>
-      <Alert icon={<FaWater />} title="test">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque, magni?
-      </Alert>
+      <Loader />
     </>
   )
 }

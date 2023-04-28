@@ -1,0 +1,17 @@
+@use '@/scss/helpers/color';
+
+.root {
+  stroke: var(--blue-600);
+}
+
+@each $color in color.$colors {
+  $light: color.getColor($color, 600);
+  $dark: color.getColor($color, 300);
+  .#{$color} {
+    stroke: $light;
+  }
+
+  html[data-theme='dark'] .#{$color} {
+    stroke: $dark;
+  }
+}
