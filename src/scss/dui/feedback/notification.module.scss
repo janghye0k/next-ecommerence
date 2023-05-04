@@ -58,7 +58,7 @@ $sizes: (
   position: relative;
   display: flex;
   align-items: center;
-  background-color: var(--background-default);
+  background-color: inherit;
   border-radius: 0.25rem;
 
   &::before {

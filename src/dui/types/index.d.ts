@@ -79,6 +79,14 @@ declare namespace Dui {
     >,
     'ref'
   >
+
+  type DefaultDialogProps = Omit<
+    React.DetailedHTMLProps<
+      React.HTMLAttributes<HTMLDialogElement>,
+      HTMLDialogElement
+    >,
+    'ref'
+  >
 }
 
 export = Dui

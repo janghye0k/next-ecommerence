@@ -122,6 +122,9 @@ body {
   background-color: var(--background-default);
   min-height: 100dvh;
 }
+#__next {
+  min-height: 100dvh;
+}
 
 a {
   color: inherit;
