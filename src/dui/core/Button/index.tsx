@@ -34,9 +34,6 @@ function BaseButton(
       })} ${className || ''}`}
       {...props}
       ref={ref}
-      data-shadow="dp02"
-      data-shadow-in="dp04"
-      data-shadow-on="dp08"
     >
       {leftIcon ? <span className={cx('iconbox')}>{leftIcon}</span> : null}
       {children}
@@ -69,9 +66,6 @@ function BaseIconButton(
       })} ${className || ''}`}
       {...props}
       ref={ref}
-      data-shadow="dp02"
-      data-shadow-in="dp04"
-      data-shadow-on="dp08"
     >
       {icon}
     </button>

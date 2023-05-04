@@ -1,10 +1,16 @@
 @use '@/scss/helpers/color';
+@use '@/scss/helpers/shadow';
 
-$sizes: ('xs', 'sm', 'md', 'lg', 'xl');
+$sizes: (
+  'xs': 0,
+  'sm': 1,
+  'md': 2,
+  'lg': 3,
+  'xl': 4,
+);
 
 @mixin bindSize() {
-  $num: 0;
-  @each $size in $sizes {
+  @each $size, $num in $sizes {
     $h: 1.5rem + 0.5rem * $num;
 
     &.#{$size} {
@@ -31,7 +37,6 @@ $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
         }
       }
     }
-    $num: $num + 1;
   }
 }
 
@@ -73,6 +78,16 @@ $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
 }
 
 .main {
+  @include shadow.useShadow(2);
+  &:hover {
+    @include shadow.useShadow(4);
+  }
+  &:active {
+    @include shadow.useShadow(6);
+  }
+}
+
+.main {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -90,7 +105,7 @@ $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
   transition: ease all 0.1s;
 
   @include bindSize();
-  @include bindColor(600, 800);
+  @include bindColor(600, 700);
 
   & {
     $color: var(--text-primary);
